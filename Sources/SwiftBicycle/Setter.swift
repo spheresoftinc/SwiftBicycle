@@ -7,10 +7,10 @@
 
 import Foundation
 
-class AnySetter: Comparable, Hashable {
+public class AnySetter: Comparable, Hashable {
 
-    enum PriorityLevel: Int, CaseIterable, Comparable {
-        static func < (lhs: AnySetter.PriorityLevel, rhs: AnySetter.PriorityLevel) -> Bool {
+    public enum PriorityLevel: Int, CaseIterable, Comparable {
+        public static func < (lhs: AnySetter.PriorityLevel, rhs: AnySetter.PriorityLevel) -> Bool {
             return lhs.rawValue < rhs.rawValue
         }
 
@@ -64,7 +64,7 @@ class AnySetter: Comparable, Hashable {
         self.anyTarget().id.hash(into: &hasher)
     }
 
-    static func < (lhs: AnySetter, rhs: AnySetter) -> Bool {
+    public static func < (lhs: AnySetter, rhs: AnySetter) -> Bool {
         return lhs.lessThan(rhs: rhs)
     }
 
@@ -96,7 +96,7 @@ class AnySetter: Comparable, Hashable {
 //    }
 }
 
-class SetterConstant<T>: AnySetter {
+public class SetterConstant<T>: AnySetter {
 
     var target: Field<T>
     var value: T

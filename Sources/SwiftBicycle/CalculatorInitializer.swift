@@ -8,17 +8,17 @@
 import Foundation
 
 
-class AnyCalculatorInitializer {
+public class AnyCalculatorInitializer {
     func orphanCalculator(collection: FieldCollection) -> AnyCalculator? {
         return nil
     }
 }
 
-class CalculatorInitializer1Op<TTarget: Equatable, TOperator1>: AnyCalculatorInitializer {
+public class CalculatorInitializer1Op<TTarget: Equatable, TOperator1>: AnyCalculatorInitializer {
 
     let targetId: FieldID
     let operator1Id: FieldID
-    typealias CalcFn = Calculator1Op<TTarget, TOperator1>.CalcFn
+    public typealias CalcFn = Calculator1Op<TTarget, TOperator1>.CalcFn
     let calcFn: CalcFn
 
     public init(targetId: FieldID, operator1Id: FieldID, calcFn: @escaping CalcFn) {

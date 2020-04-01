@@ -9,6 +9,9 @@ import Foundation
 
 public struct FieldID: Hashable {
     let uuid = UUID()
+
+    public init() {
+    }
 }
 
 public class AnyField: Hashable {

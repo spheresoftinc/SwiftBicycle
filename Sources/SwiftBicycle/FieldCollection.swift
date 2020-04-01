@@ -20,6 +20,9 @@ public class FieldCollection {
 
     // MARK: General
 
+    public init() {
+    }
+
     func reconnectAll() {
         setters.forEach { $0.reconnectDependency() }
     }
@@ -82,7 +85,7 @@ public class FieldCollection {
 
     // MARK: Calculators
 
-    func connectCalculators() {
+    public func connectCalculators() {
         AnyField.calculatorInitializers
             .compactMap { $0.orphanCalculator(collection: self) }
             .forEach { self.adoptCalculator(calculator: $0) }
@@ -113,7 +116,7 @@ public class FieldCollection {
 
     // MARK: Setters
 
-    func adoptSetter(setter: AnySetter) {
+    public func adoptSetter(setter: AnySetter) {
         setter.insertOrder = numSettersInserted
         numSettersInserted += 1
         let ac = self.autoCalc
