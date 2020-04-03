@@ -19,13 +19,17 @@ public class AnySetter: Comparable, Hashable {
         case notCalced
     }
 
-    weak var collection: FieldCollection?
+    public internal(set) weak var collection: FieldCollection? {
+        willSet {
+            assert(newValue == nil || self.collection == nil)
+        }
+    }
+    
     var canCalculate = true
     var priorityLevel: PriorityLevel
     var insertOrder: Int = 0
 
-    public init(collection: FieldCollection, priorityLevel: PriorityLevel = .normal) {
-        self.collection = collection
+    public init(priorityLevel: PriorityLevel = .normal) {
         self.priorityLevel = priorityLevel
     }
 
@@ -49,7 +53,7 @@ public class AnySetter: Comparable, Hashable {
     func anyTarget() -> AnyField {
         assertionFailure("anyTarget must be overridden")
         // This line is here for the compiler. If you get here, it's programmer error.
-        return AnyField(id: FieldID(), collection: self.collection!)
+        return AnyField()
     }
 
     func shouldCountAsCalc() -> Bool {
@@ -98,13 +102,14 @@ public class AnySetter: Comparable, Hashable {
 
 public class SetterConstant<T>: AnySetter {
 
+    public typealias ValueType = T
     var target: Field<T>
     var value: T
 
-    public init(collection: FieldCollection, priorityLevel: PriorityLevel = .normal, target: Field<T>, value: T) {
+    public init(priorityLevel: PriorityLevel = .normal, target: Field<T>, value: T) {
         self.target = target
         self.value = value
-        super.init(collection: collection, priorityLevel: priorityLevel)
+        super.init(priorityLevel: priorityLevel)
     }
 
     override func anyTarget() -> AnyField {

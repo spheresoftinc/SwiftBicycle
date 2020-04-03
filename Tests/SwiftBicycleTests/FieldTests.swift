@@ -13,7 +13,7 @@ class FieldTests: XCTestCase {
 
     func testField() {
         let collection = FieldCollection()
-        let f = Field<Int>(id: FieldID(), collection: collection)
+        let f = Field<Int>()
         collection.adoptField(field: f)
         XCTAssertEqual(f.code, Field.Code.clear)
     }
@@ -21,10 +21,10 @@ class FieldTests: XCTestCase {
     func testFieldCalculator() {
         let collection = FieldCollection()
 
-        let feet = Field<Double>(id: FieldID(), collection: collection)
+        let feet = Field<Double>()
         collection.adoptField(field: feet)
 
-        let inches = Field<Double>(id: FieldID(), collection: collection)
+        let inches = Field<Double>()
         collection.adoptField(field: inches)
 
 
@@ -33,7 +33,7 @@ class FieldTests: XCTestCase {
 
         collection.connectCalculators()
 
-        let setter = SetterConstant(collection: collection, target: feet, value: 3.0)
+        let setter = SetterConstant(target: feet, value: 3.0)
         collection.adoptSetter(setter: setter)
 
         XCTAssertEqual(feet.code, .set)
@@ -42,7 +42,7 @@ class FieldTests: XCTestCase {
         XCTAssertEqual(inches.code, .calced)
         XCTAssertEqual(inches.value(), 36.0)
 
-        let setter2 = SetterConstant(collection: collection, target: inches, value: 12.0)
+        let setter2 = SetterConstant(target: inches, value: 12.0)
         collection.adoptSetter(setter: setter2)
         XCTAssertEqual(feet.code, .calced)
         XCTAssertEqual(feet.value(), 1.0)

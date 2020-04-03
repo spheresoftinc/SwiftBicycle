@@ -65,10 +65,12 @@ public class FieldCollection {
 
     public func adoptField(field: AnyField) {
         self.fields.insert(field)
+        field.collection = self
     }
 
     public func dropField(field: AnyField) {
         self.fields.remove(field)
+        field.collection = nil
     }
 
     func clearFields() {
@@ -117,6 +119,7 @@ public class FieldCollection {
     // MARK: Setters
 
     public func adoptSetter(setter: AnySetter) {
+        setter.collection = self
         setter.insertOrder = numSettersInserted
         numSettersInserted += 1
         let ac = self.autoCalc
@@ -131,7 +134,8 @@ public class FieldCollection {
 
     func dropASetter(field: AnyField) -> Bool {
         if let setterIndex = setters.firstIndex(where: { $0.isMatch(field: field) }) {
-            setters.remove(at: setterIndex)
+            let setter = setters.remove(at: setterIndex)
+            setter.collection = nil
             return true
         }
         return false
@@ -139,7 +143,8 @@ public class FieldCollection {
 
     func dropSetter(setter: AnySetter) {
         if let setterIndex = setters.firstIndex(where: { $0 === setter }) {
-            setters.remove(at: setterIndex)
+            let setter = setters.remove(at: setterIndex)
+            setter.collection = nil
             reconnectAll()
         }
     }

@@ -45,7 +45,7 @@ public class AnyCalculator: Hashable {
     public func anyTarget() -> AnyField {
         assertionFailure("anyTarget must be overridden")
         // This line is here for the compiler. If you get here, it's programmer error.
-        return AnyField(id: FieldID(), collection: self.collection!)
+        return AnyField()
     }
 }
 

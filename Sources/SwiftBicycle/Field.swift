@@ -16,7 +16,11 @@ public struct FieldID: Hashable {
 
 public class AnyField: Hashable {
     public let id: FieldID
-    weak var collection: FieldCollection?
+    public internal(set) weak var collection: FieldCollection? {
+        willSet {
+            assert(newValue == nil || self.collection == nil)
+        }
+    }
     var dependents = [AnyCalculator]()
     static var calculatorInitializers = [AnyCalculatorInitializer]()
 
@@ -30,9 +34,8 @@ public class AnyField: Hashable {
 
     public var code: Code = .clear
 
-    public init(id: FieldID, collection: FieldCollection) {
+    public init(id: FieldID = FieldID()) {
         self.id = id
-        self.collection = collection
     }
 
     public func clear() {
@@ -94,6 +97,7 @@ public class AnyField: Hashable {
 
 public class Field<T>: AnyField {
 
+    public typealias ValueType = T
     private var maybeValue: T?
 
     public func setValue(value: T, code: Code) -> Bool

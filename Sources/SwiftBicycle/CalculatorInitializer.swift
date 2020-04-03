@@ -9,6 +9,11 @@ import Foundation
 
 
 public class AnyCalculatorInitializer {
+
+    init() {
+        AnyField.registerCalcInitializer(calculatorInitializer: self)
+    }
+
     func orphanCalculator(collection: FieldCollection) -> AnyCalculator? {
         return nil
     }
@@ -26,7 +31,6 @@ public class CalculatorInitializer1Op<TTarget: Equatable, TOperator1>: AnyCalcul
         self.operator1Id = operator1Id
         self.calcFn = calcFn
         super.init()
-        AnyField.registerCalcInitializer(calculatorInitializer: self)
     }
 
     override func orphanCalculator(collection: FieldCollection) -> AnyCalculator? {
