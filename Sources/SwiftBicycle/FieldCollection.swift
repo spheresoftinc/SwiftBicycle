@@ -8,7 +8,7 @@
 import Foundation
 public class FieldCollection {
 
-    var fields = Set<AnyField>()
+    public private(set) var fields = Set<AnyField>()
     var calculators = Set<AnyCalculator>()
     var setters = [AnySetter]()
 
