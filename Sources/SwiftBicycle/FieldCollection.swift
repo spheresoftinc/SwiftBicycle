@@ -6,6 +6,17 @@
 //
 
 import Foundation
+
+public protocol FieldCollectionDelegate: class {
+    func fieldCollectionWillCalculate(_ collection: FieldCollection)
+    func fieldCollectionDidCalculate(_ collection: FieldCollection)
+}
+
+public extension FieldCollectionDelegate {
+    func fieldCollectionWillCalculate(_ collection: FieldCollection) {}
+    func fieldCollectionDidCalculate(_ collection: FieldCollection) {}
+}
+
 public class FieldCollection {
 
     public private(set) var fields = Set<AnyField>()
@@ -17,6 +28,8 @@ public class FieldCollection {
 
     var autoCalc = true
     var numSettersInserted = 0
+
+    public weak var delegate: FieldCollectionDelegate?
 
     // MARK: General
 
@@ -158,6 +171,7 @@ public class FieldCollection {
     }
 
     func setFields() {
+        delegate?.fieldCollectionWillCalculate(self)
         clearFields()
         clearUsedRelationships()
         clearCalculators()
@@ -182,6 +196,7 @@ public class FieldCollection {
                 }
             }
         }
+        delegate?.fieldCollectionDidCalculate(self)
     }
 
     func sortSetters() {
