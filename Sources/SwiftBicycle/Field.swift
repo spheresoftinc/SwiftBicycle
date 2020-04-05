@@ -16,9 +16,9 @@ public struct FieldID: Hashable {
 
 public class AnyField: Hashable {
     public let id: FieldID
-    public internal(set) weak var collection: FieldCollection? {
+    public internal(set) weak var network: BicycleNetwork? {
         willSet {
-            assert(newValue == nil || self.collection == nil)
+            assert(newValue == nil || self.network == nil)
         }
     }
     var dependents = [AnyCalculator]()

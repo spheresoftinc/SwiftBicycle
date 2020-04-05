@@ -19,9 +19,9 @@ public class AnySetter: Comparable, Hashable {
         case notCalced
     }
 
-    public internal(set) weak var collection: FieldCollection? {
+    public internal(set) weak var network: BicycleNetwork? {
         willSet {
-            assert(newValue == nil || self.collection == nil)
+            assert(newValue == nil || self.network == nil)
         }
     }
     
@@ -95,8 +95,8 @@ public class AnySetter: Comparable, Hashable {
 
     // TODO: Do we need the graph library?
 //    func targetDependsOnTargetOf(setter: AnySetter) -> Bool {
-//        guard let collection = self.collection else { return false }
-//        return collection.fieldDependent(field: setter.anyTarget(), onField: self.anyTarget())
+//        guard let network = self.network else { return false }
+//        return network.fieldDependent(field: setter.anyTarget(), onField: self.anyTarget())
 //    }
 }
 

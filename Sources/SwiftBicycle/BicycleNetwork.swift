@@ -1,5 +1,5 @@
 //
-//  FieldCollection.swift
+//  BicycleNetwork.swift
 //  
 //
 //  Copyright 2020 Spheresoft
@@ -7,17 +7,17 @@
 
 import Foundation
 
-public protocol FieldCollectionDelegate: class {
-    func fieldCollectionWillCalculate(_ collection: FieldCollection)
-    func fieldCollectionDidCalculate(_ collection: FieldCollection)
+public protocol BicycleNetworkDelegate: class {
+    func networkWillCalculate(_ network: BicycleNetwork)
+    func networkDidCalculate(_ network: BicycleNetwork)
 }
 
-public extension FieldCollectionDelegate {
-    func fieldCollectionWillCalculate(_ collection: FieldCollection) {}
-    func fieldCollectionDidCalculate(_ collection: FieldCollection) {}
+public extension BicycleNetworkDelegate {
+    func networkWillCalculate(_ network: BicycleNetwork) {}
+    func networkDidCalculate(_ network: BicycleNetwork) {}
 }
 
-public class FieldCollection {
+public class BicycleNetwork {
 
     public private(set) var fields = Set<AnyField>()
     var calculators = Set<AnyCalculator>()
@@ -29,7 +29,7 @@ public class FieldCollection {
     var autoCalc = true
     var numSettersInserted = 0
 
-    public weak var delegate: FieldCollectionDelegate?
+    public weak var delegate: BicycleNetworkDelegate?
 
     // MARK: General
 
@@ -78,12 +78,12 @@ public class FieldCollection {
 
     public func adoptField(field: AnyField) {
         self.fields.insert(field)
-        field.collection = self
+        field.network = self
     }
 
     public func dropField(field: AnyField) {
         self.fields.remove(field)
-        field.collection = nil
+        field.network = nil
     }
 
     func clearFields() {
@@ -102,7 +102,7 @@ public class FieldCollection {
 
     public func connectCalculators() {
         AnyField.calculatorInitializers
-            .compactMap { $0.orphanCalculator(collection: self) }
+            .compactMap { $0.orphanCalculator(network: self) }
             .forEach { self.adoptCalculator(calculator: $0) }
     }
 
@@ -132,7 +132,7 @@ public class FieldCollection {
     // MARK: Setters
 
     public func adoptSetter(setter: AnySetter) {
-        setter.collection = self
+        setter.network = self
         setter.insertOrder = numSettersInserted
         numSettersInserted += 1
         let ac = self.autoCalc
@@ -148,7 +148,7 @@ public class FieldCollection {
     func dropASetter(field: AnyField) -> Bool {
         if let setterIndex = setters.firstIndex(where: { $0.isMatch(field: field) }) {
             let setter = setters.remove(at: setterIndex)
-            setter.collection = nil
+            setter.network = nil
             return true
         }
         return false
@@ -157,7 +157,7 @@ public class FieldCollection {
     func dropSetter(setter: AnySetter) {
         if let setterIndex = setters.firstIndex(where: { $0 === setter }) {
             let setter = setters.remove(at: setterIndex)
-            setter.collection = nil
+            setter.network = nil
             reconnectAll()
         }
     }
@@ -171,7 +171,7 @@ public class FieldCollection {
     }
 
     func setFields() {
-        delegate?.fieldCollectionWillCalculate(self)
+        delegate?.networkWillCalculate(self)
         clearFields()
         clearUsedRelationships()
         clearCalculators()
@@ -196,7 +196,7 @@ public class FieldCollection {
                 }
             }
         }
-        delegate?.fieldCollectionDidCalculate(self)
+        delegate?.networkDidCalculate(self)
     }
 
     func sortSetters() {

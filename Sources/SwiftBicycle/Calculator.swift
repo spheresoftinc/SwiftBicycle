@@ -8,11 +8,11 @@
 import Foundation
 
 public class AnyCalculator: Hashable {
-    weak var collection: FieldCollection?
+    weak var network: BicycleNetwork?
     var wasUsed = false
 
-    public init(collection: FieldCollection) {
-        self.collection = collection
+    public init(network: BicycleNetwork) {
+        self.network = network
     }
 
     public func setField() -> Bool {
@@ -53,9 +53,9 @@ public class Calculator<TTarget>: AnyCalculator {
 
     var target: Field<TTarget>
 
-    public init(collection: FieldCollection, target: Field<TTarget>) {
+    public init(network: BicycleNetwork, target: Field<TTarget>) {
         self.target = target
-        super.init(collection: collection)
+        super.init(network: network)
     }
 
     public override func makeRelationship() -> Relationship {
@@ -82,11 +82,11 @@ public class Calculator1Op<TTarget: Equatable, TOperand1>: Calculator<TTarget> {
     var calcFn: CalcFn
     var readyFn: ReadyFn?
 
-    public init(collection: FieldCollection, target: Field<TTarget>, operand1: Field<TOperand1>, calcFn: @escaping CalcFn, readyFn: ReadyFn? = nil) {
+    public init(network: BicycleNetwork, target: Field<TTarget>, operand1: Field<TOperand1>, calcFn: @escaping CalcFn, readyFn: ReadyFn? = nil) {
         self.operand1 = operand1
         self.calcFn = calcFn
         self.readyFn = readyFn
-        super.init(collection: collection, target: target)
+        super.init(network: network, target: target)
         operand1.addDependent(calculator: self)
     }
 
@@ -122,12 +122,12 @@ public class Calculator1Op<TTarget: Equatable, TOperand1>: Calculator<TTarget> {
             return true // not ready, but that's ok
         }
 
-        guard let collection = self.collection else { return true }
+        guard let network = self.network else { return true }
 
         // check to see if an inversion of this calculator has already been used
         // if it has, we may not want to use it.
         let r = makeRelationship()
-        guard !collection.relationshipWasUsed(relationship: r) else {
+        guard !network.relationshipWasUsed(relationship: r) else {
             return true
         }
 
@@ -136,10 +136,10 @@ public class Calculator1Op<TTarget: Equatable, TOperand1>: Calculator<TTarget> {
         if target.code == .clear {
             // every calc that acts is added to the rollbacks, and will be reversed if the network
             // becomes inconsistent
-            collection.addRollback(calculator: self)
+            network.addRollback(calculator: self)
 
             // register the relationship
-            collection.addUsedRelationship(relationship: r)
+            network.addUsedRelationship(relationship: r)
 
             // Set the value with a calc code...
             return target.setValue(value: result, code: .calced)

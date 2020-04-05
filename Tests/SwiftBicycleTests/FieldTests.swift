@@ -12,29 +12,29 @@ import XCTest
 class FieldTests: XCTestCase {
 
     func testField() {
-        let collection = FieldCollection()
+        let network = BicycleNetwork()
         let f = Field<Int>()
-        collection.adoptField(field: f)
+        network.adoptField(field: f)
         XCTAssertEqual(f.code, Field.Code.clear)
     }
 
     func testFieldCalculator() {
-        let collection = FieldCollection()
+        let network = BicycleNetwork()
 
         let feet = Field<Double>()
-        collection.adoptField(field: feet)
+        network.adoptField(field: feet)
 
         let inches = Field<Double>()
-        collection.adoptField(field: inches)
+        network.adoptField(field: inches)
 
 
         let _ = CalculatorInitializer1Op(targetId: inches.id, operator1Id: feet.id) { $0 * 12.0 }
         let _ = CalculatorInitializer1Op(targetId: feet.id, operator1Id: inches.id) { $0 / 12.0 }
 
-        collection.connectCalculators()
+        network.connectCalculators()
 
         let setter = SetterConstant(target: feet, value: 3.0)
-        collection.adoptSetter(setter: setter)
+        network.adoptSetter(setter: setter)
 
         XCTAssertEqual(feet.code, .set)
         XCTAssertEqual(feet.value(), 3.0)
@@ -43,7 +43,7 @@ class FieldTests: XCTestCase {
         XCTAssertEqual(inches.value(), 36.0)
 
         let setter2 = SetterConstant(target: inches, value: 12.0)
-        collection.adoptSetter(setter: setter2)
+        network.adoptSetter(setter: setter2)
         XCTAssertEqual(feet.code, .calced)
         XCTAssertEqual(feet.value(), 1.0)
         XCTAssertEqual(inches.code, .set)
