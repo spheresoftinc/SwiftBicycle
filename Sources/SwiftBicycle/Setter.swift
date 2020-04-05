@@ -139,3 +139,15 @@ public class SetterConstant<T>: AnySetter {
         return self.target === field
     }
 }
+
+// Convenience function for using constant setters
+public extension Field where Field.ValueType: Equatable {
+    func set(value: T) {
+        guard
+            let network = self.network,
+            self.code == .clear || self.value() != value
+        else { return }
+
+        network.adoptSetter(setter: SetterConstant(target: self, value: value))
+    }
+}

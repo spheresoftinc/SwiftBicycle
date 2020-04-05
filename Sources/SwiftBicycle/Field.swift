@@ -112,3 +112,28 @@ public class Field<T>: AnyField {
         return self.maybeValue!
     }
 }
+
+public extension Field where Field.ValueType: Equatable & LosslessStringConvertible {
+    internal func set(text: String) {
+        if let val = T(text) {
+            set(value: val)
+        }
+    }
+
+    internal func getText() -> String {
+        if self.code != .clear {
+            return String(self.value())
+        } else {
+            return ""
+        }
+    }
+
+    var text: String {
+        get {
+            return self.getText()
+        }
+        set {
+            self.set(text: newValue)
+        }
+    }
+}
