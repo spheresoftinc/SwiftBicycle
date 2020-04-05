@@ -22,7 +22,7 @@ public class AnyField: Hashable {
         }
     }
     var dependents = [AnyCalculator]()
-    static var calculatorInitializers = [AnyCalculatorInitializer]()
+    static var calculatorFactories = [AnyCalculatorFactory]()
 
     public enum Code: CaseIterable {
         case clear
@@ -90,8 +90,8 @@ public class AnyField: Hashable {
         return lhs === rhs
     }
 
-    static func registerCalcInitializer(calculatorInitializer: AnyCalculatorInitializer) {
-        calculatorInitializers.append(calculatorInitializer)
+    static func registerCalcFactory(calculatorFactory: AnyCalculatorFactory) {
+        calculatorFactories.append(calculatorFactory)
     }
 }
 

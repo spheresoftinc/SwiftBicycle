@@ -101,8 +101,8 @@ public class BicycleNetwork {
     // MARK: Calculators
 
     public func connectCalculators() {
-        AnyField.calculatorInitializers
-            .compactMap { $0.orphanCalculator(network: self) }
+        AnyField.calculatorFactories
+            .compactMap { $0.makeOrphanCalculator(network: self) }
             .forEach { self.adoptCalculator(calculator: $0) }
     }
 
