@@ -21,7 +21,7 @@ public class AnyField: Hashable {
             assert(newValue == nil || self.network == nil)
         }
     }
-    var dependents = [AnyCalculator]()
+    var dependents = Set<AnyCalculator>()
     static var calculatorFactories = [AnyCalculatorFactory]()
 
     public enum Code: CaseIterable {
@@ -42,14 +42,12 @@ public class AnyField: Hashable {
         dependents.removeAll()
     }
 
-    public func addDependent(calculator: AnyCalculator) {
-        if dependents.first(where: { $0 === calculator }) == nil {
-            dependents.append(calculator)
-        }
+    func addDependent(calculator: AnyCalculator) {
+        dependents.insert(calculator)
     }
 
-    public func dropDependent(calculator: AnyCalculator) {
-        dependents.removeAll(where: { $0 === calculator })
+    func dropDependent(calculator: AnyCalculator) {
+        dependents.remove(calculator)
     }
 
     func propagate() -> Bool {
