@@ -36,10 +36,6 @@ public class BicycleNetwork {
     public init() {
     }
 
-    func reconnectAll() {
-        setters.forEach { $0.reconnectDependency() }
-    }
-
     func doAutoCalc() {
         if autoCalc {
             setFields()
@@ -90,10 +86,6 @@ public class BicycleNetwork {
         fields.forEach { $0.code = .clear }
     }
 
-    func field(id: FieldID) -> AnyField? {
-        return fields.first(where: { $0.id == id })
-    }
-
     func getField(id: FieldID) -> AnyField? {
         return fields.first { $0.id == id }
     }
@@ -111,9 +103,7 @@ public class BicycleNetwork {
     }
 
     func dropCalculator(calculator: AnyCalculator) {
-        if calculators.remove(calculator) != nil {
-            reconnectAll()
-        }
+        calculators.remove(calculator)
     }
 
     func clearCalculators() {
@@ -158,7 +148,6 @@ public class BicycleNetwork {
         if let setterIndex = setters.firstIndex(where: { $0 === setter }) {
             let setter = setters.remove(at: setterIndex)
             setter.network = nil
-            reconnectAll()
         }
     }
 
@@ -166,7 +155,6 @@ public class BicycleNetwork {
         while dropASetter(field: field) {
             // do nothing
         }
-        reconnectAll()
         doAutoCalc()
     }
 

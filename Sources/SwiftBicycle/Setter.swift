@@ -60,10 +60,6 @@ public class AnySetter: Comparable, Hashable {
         return false
     }
 
-    func reconnectDependency() {
-
-    }
-
     public func hash(into hasher: inout Hasher) {
         self.anyTarget().id.hash(into: &hasher)
     }
@@ -92,12 +88,6 @@ public class AnySetter: Comparable, Hashable {
     func isMatch(field: AnyField) -> Bool {
         return false
     }
-
-    // TODO: Do we need the graph library?
-//    func targetDependsOnTargetOf(setter: AnySetter) -> Bool {
-//        guard let network = self.network else { return false }
-//        return network.fieldDependent(field: setter.anyTarget(), onField: self.anyTarget())
-//    }
 }
 
 public class SetterConstant<T>: AnySetter {
