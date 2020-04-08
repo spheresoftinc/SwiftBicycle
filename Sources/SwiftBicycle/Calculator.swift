@@ -15,24 +15,20 @@ public class AnyCalculator: Hashable {
         self.network = network
     }
 
-    public func setField() -> Bool {
+    func setField() -> Bool {
         return false
     }
 
-    public func resetField() {
+    func resetField() {
 
     }
 
-    public func isReady() -> Bool {
+    func isReady() -> Bool {
         return true
     }
 
-    public func makeRelationship() -> Relationship {
+    func makeRelationship() -> Relationship {
         return Relationship()
-    }
-
-    public func allowRedundancyChecking() -> Bool {
-        return false
     }
 
     public func hash(into hasher: inout Hasher) {
@@ -42,7 +38,7 @@ public class AnyCalculator: Hashable {
         return lhs === rhs
     }
 
-    public func anyTarget() -> AnyField {
+    func anyTarget() -> AnyField {
         assertionFailure("anyTarget must be overridden")
         // This line is here for the compiler. If you get here, it's programmer error.
         return AnyField()
@@ -58,7 +54,7 @@ public class Calculator<TTarget: Equatable>: AnyCalculator {
         super.init(network: network)
     }
 
-    public override func makeRelationship() -> Relationship {
+    override func makeRelationship() -> Relationship {
         let r = super.makeRelationship()
         r.addSourceField(fieldID: target.id)
         return r
@@ -69,7 +65,7 @@ public class Calculator<TTarget: Equatable>: AnyCalculator {
         target.id.hash(into: &hasher)
     }
 
-    public override func anyTarget() -> AnyField {
+    override func anyTarget() -> AnyField {
         return target
     }
 
@@ -78,7 +74,7 @@ public class Calculator<TTarget: Equatable>: AnyCalculator {
         return nil
     }
 
-    public override func setField() -> Bool {
+    override func setField() -> Bool {
         // check to see if this calculator is ready.  Typically this means that all of the source
         // operands are not clear, but in some cases, the actual values of the fields may determine
         // if this calculator is ready (i.e. value-dependent calculators).
@@ -137,7 +133,7 @@ public class Calculator1Op<TTarget: Equatable, TOperand1>: Calculator<TTarget> {
     }
 
 
-    public override func isReady() -> Bool {
+    override func isReady() -> Bool {
         guard operand1.code != .clear else {
             return false
         }
@@ -149,7 +145,7 @@ public class Calculator1Op<TTarget: Equatable, TOperand1>: Calculator<TTarget> {
         return self.calcFn(self.operand1.value())
     }
 
-    public override func makeRelationship() -> Relationship {
+    override func makeRelationship() -> Relationship {
         let r = super.makeRelationship()
         r.addSourceField(fieldID: operand1.id)
         return r
@@ -184,7 +180,7 @@ public class Calculator2Op<TTarget: Equatable, TOperand1, TOperand2>: Calculator
     }
 
 
-    public override func isReady() -> Bool {
+    override func isReady() -> Bool {
         guard operand1.code != .clear else {
             return false
         }
@@ -200,7 +196,7 @@ public class Calculator2Op<TTarget: Equatable, TOperand1, TOperand2>: Calculator
         return self.calcFn(self.operand1.value(), self.operand2.value())
     }
 
-    public override func makeRelationship() -> Relationship {
+    override func makeRelationship() -> Relationship {
         let r = super.makeRelationship()
         r.addSourceField(fieldID: operand1.id)
         r.addSourceField(fieldID: operand2.id)

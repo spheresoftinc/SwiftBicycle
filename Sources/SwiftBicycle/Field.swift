@@ -38,7 +38,7 @@ public class AnyField: Hashable {
         self.id = id
     }
 
-    public func clear() {
+    func clear() {
         dependents.removeAll()
     }
 
@@ -52,7 +52,7 @@ public class AnyField: Hashable {
         dependents.removeAll(where: { $0 === calculator })
     }
 
-    public func propagate() -> Bool {
+    func propagate() -> Bool {
         for dependent in dependents {
             if dependent.setField() {
                 // Do nothing when propagation succeeds.
@@ -68,17 +68,17 @@ public class AnyField: Hashable {
         return true
     }
 
-    public private(set) var numTargettingCalcs: Int = 0
+    private var numTargettingCalcs: Int = 0
 
-    public func zeroNumTargettingCalculators() {
+    func zeroNumTargettingCalculators() {
         numTargettingCalcs = 0
     }
 
-    public func incrementNumTargettingCalculators() {
+    func incrementNumTargettingCalculators() {
         numTargettingCalcs += 1
     }
 
-    public func hasNoTargettingCalcs() -> Bool {
+    func hasNoTargettingCalcs() -> Bool {
         return numTargettingCalcs == 0
     }
 

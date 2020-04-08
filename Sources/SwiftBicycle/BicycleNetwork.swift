@@ -26,7 +26,7 @@ public class BicycleNetwork {
     var rollbackCalculators = Set<AnyCalculator>()
     var usedRelationships = Set<Relationship>()
 
-    var autoCalc = true
+    public var autoCalc = true
     var numSettersInserted = 0
 
     public weak var delegate: BicycleNetworkDelegate?
@@ -158,7 +158,7 @@ public class BicycleNetwork {
         doAutoCalc()
     }
 
-    func setFields() {
+    public func setFields() {
         delegate?.networkWillCalculate(self)
         clearFields()
         clearUsedRelationships()
