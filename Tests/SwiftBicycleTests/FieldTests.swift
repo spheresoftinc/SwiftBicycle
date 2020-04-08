@@ -27,8 +27,8 @@ class FieldTests: XCTestCase {
         let inches = Field<Double>()
         network.adoptField(field: inches)
 
-        Calculator1OpFactory.registerFactory(targetId: inches.id, operator1Id: feet.id) { $0 * 12.0 }
-        Calculator1OpFactory.registerFactory(targetId: feet.id, operator1Id: inches.id) { $0 / 12.0 }
+        Calculator1OpFactory.registerFactory(targetId: inches.id, operand1Id: feet.id) { $0 * 12.0 }
+        Calculator1OpFactory.registerFactory(targetId: feet.id, operand1Id: inches.id) { $0 / 12.0 }
 
         network.connectCalculators()
 
@@ -61,9 +61,9 @@ class FieldTests: XCTestCase {
         let sum = Field<Double>()
         network.adoptField(field: sum)
 
-        Calculator2OpFactory.registerFactory(targetId: sum.id, operator1Id: num1.id, operator2Id: num2.id) { (a, b) -> Double in a + b }
-        Calculator2OpFactory.registerFactory(targetId: num1.id, operator1Id: sum.id, operator2Id: num2.id) { (a, b) -> Double in a - b }
-        Calculator2OpFactory.registerFactory(targetId: num2.id, operator1Id: sum.id, operator2Id: num1.id) { (a, b) -> Double in a - b }
+        Calculator2OpFactory.registerFactory(targetId: sum.id, operand1Id: num1.id, operand2Id: num2.id) { (a, b) -> Double in a + b }
+        Calculator2OpFactory.registerFactory(targetId: num1.id, operand1Id: sum.id, operand2Id: num2.id) { (a, b) -> Double in a - b }
+        Calculator2OpFactory.registerFactory(targetId: num2.id, operand1Id: sum.id, operand2Id: num1.id) { (a, b) -> Double in a - b }
 
         network.connectCalculators()
 

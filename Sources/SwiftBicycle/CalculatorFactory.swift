@@ -19,61 +19,61 @@ public class AnyCalculatorFactory {
     }
 }
 
-public class Calculator1OpFactory<TTarget: Equatable, TOperator1>: AnyCalculatorFactory {
+public class Calculator1OpFactory<TTarget: Equatable, TOperand1>: AnyCalculatorFactory {
 
     let targetId: FieldID
-    let operator1Id: FieldID
-    public typealias CalcFn = Calculator1Op<TTarget, TOperator1>.CalcFn
+    let operand1Id: FieldID
+    public typealias CalcFn = Calculator1Op<TTarget, TOperand1>.CalcFn
     let calcFn: CalcFn
 
-    init(targetId: FieldID, operator1Id: FieldID, calcFn: @escaping CalcFn) {
+    init(targetId: FieldID, operand1Id: FieldID, calcFn: @escaping CalcFn) {
         self.targetId = targetId
-        self.operator1Id = operator1Id
+        self.operand1Id = operand1Id
         self.calcFn = calcFn
         super.init()
     }
 
-    public static func registerFactory(targetId: FieldID, operator1Id: FieldID, calcFn: @escaping CalcFn) {
-        _ = Calculator1OpFactory(targetId: targetId, operator1Id: operator1Id, calcFn: calcFn)
+    public static func registerFactory(targetId: FieldID, operand1Id: FieldID, calcFn: @escaping CalcFn) {
+        _ = Calculator1OpFactory(targetId: targetId, operand1Id: operand1Id, calcFn: calcFn)
     }
 
     override func makeOrphanCalculator(network: BicycleNetwork) -> AnyCalculator? {
         guard
             let targetField = network.getField(id: targetId) as? Field<TTarget>,
-            let operator1Field = network.getField(id: operator1Id) as? Field<TOperator1>
+            let operand1Field = network.getField(id: operand1Id) as? Field<TOperand1>
             else { return nil }
-        return Calculator1Op<TTarget, TOperator1>(network: network, target: targetField, operand1: operator1Field, calcFn: calcFn)
+        return Calculator1Op<TTarget, TOperand1>(network: network, target: targetField, operand1: operand1Field, calcFn: calcFn)
     }
 
 }
 
-public class Calculator2OpFactory<TTarget: Equatable, TOperator1, TOperator2>: AnyCalculatorFactory {
+public class Calculator2OpFactory<TTarget: Equatable, TOperand1, TOperand2>: AnyCalculatorFactory {
 
     let targetId: FieldID
-    let operator1Id: FieldID
-    let operator2Id: FieldID
-    public typealias CalcFn = Calculator2Op<TTarget, TOperator1, TOperator2>.CalcFn
+    let operand1Id: FieldID
+    let operand2Id: FieldID
+    public typealias CalcFn = Calculator2Op<TTarget, TOperand1, TOperand2>.CalcFn
     let calcFn: CalcFn
 
-    init(targetId: FieldID, operator1Id: FieldID, operator2Id: FieldID, calcFn: @escaping CalcFn) {
+    init(targetId: FieldID, operand1Id: FieldID, operand2Id: FieldID, calcFn: @escaping CalcFn) {
         self.targetId = targetId
-        self.operator1Id = operator1Id
-        self.operator2Id = operator2Id
+        self.operand1Id = operand1Id
+        self.operand2Id = operand2Id
         self.calcFn = calcFn
         super.init()
     }
 
-    public static func registerFactory(targetId: FieldID, operator1Id: FieldID, operator2Id: FieldID, calcFn: @escaping CalcFn) {
-        _ = Calculator2OpFactory(targetId: targetId, operator1Id: operator1Id, operator2Id: operator2Id, calcFn: calcFn)
+    public static func registerFactory(targetId: FieldID, operand1Id: FieldID, operand2Id: FieldID, calcFn: @escaping CalcFn) {
+        _ = Calculator2OpFactory(targetId: targetId, operand1Id: operand1Id, operand2Id: operand2Id, calcFn: calcFn)
     }
 
     override func makeOrphanCalculator(network: BicycleNetwork) -> AnyCalculator? {
         guard
             let targetField = network.getField(id: targetId) as? Field<TTarget>,
-            let operator1Field = network.getField(id: operator1Id) as? Field<TOperator1>,
-            let operator2Field = network.getField(id: operator2Id) as? Field<TOperator2>
+            let operand1Field = network.getField(id: operand1Id) as? Field<TOperand1>,
+            let operand2Field = network.getField(id: operand2Id) as? Field<TOperand2>
             else { return nil }
-        return Calculator2Op<TTarget, TOperator1, TOperator2>(network: network, target: targetField, operand1: operator1Field, operand2: operator2Field, calcFn: calcFn)
+        return Calculator2Op<TTarget, TOperand1, TOperand2>(network: network, target: targetField, operand1: operand1Field, operand2: operand2Field, calcFn: calcFn)
     }
 
 }
