@@ -86,7 +86,7 @@ public class AnySetter: Comparable, Hashable {
     }
 
     func isMatch(field: AnyField) -> Bool {
-        return false
+       return self.anyTarget() === field
     }
 }
 
@@ -125,9 +125,6 @@ public class SetterConstant<T>: AnySetter {
         return false
     }
 
-    override func isMatch(field: AnyField) -> Bool {
-        return self.target === field
-    }
 }
 
 // Convenience function for using constant setters
