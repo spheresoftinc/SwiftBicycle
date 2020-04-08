@@ -166,21 +166,23 @@ public class BicycleNetwork {
         countCalcsPerField()
         sortSetters()
 
+        let len = setters.count
         var done = false
         while !done {
-            for i in 0..<setters.count {
-                done = true
+            for i in 0..<len {
                 rollbackCalculators.removeAll()
                 if setters[i].setField() {
                     // If the setter was successful, mark the list of rollback calculators as used
                     // this way we can not use others in the same relationship
                     markRollbackCalculatorsAsUsed()
                     // break out of this loop so that we can retry old setters that failed
-                    done = false
                     break
                 } else {
                     // if the setter was not successful, undo the effects of all the calculators
                     rollback()
+                }
+                if i == len-1 {
+                    done = true
                 }
             }
         }
