@@ -23,14 +23,17 @@ func typeList(numOperands: Int) -> String {
   return commaList(numOperands: numOperands) { "TOperand\($0)" }
 }
 
-func argList(numOperands: Int) -> String {
+func argFieldList(numOperands: Int) -> String {
+  return commaList(numOperands: numOperands) { "operand\($0): Field<TOperand\($0)>" }
+}
+
+func argIdList(numOperands: Int) -> String {
   return commaList(numOperands: numOperands) { "operand\($0)Id: FieldID" }
 }
 
 func argPassList(numOperands: Int) -> String {
-  return commaList(numOperands: numOperands) { "operand\($0)Id: operand\($0)Id" }
+  return commaList(numOperands: numOperands) { "operand\($0)Id: operand\($0).id" }
 }
-
 
 func argPassFieldList(numOperands: Int) -> String {
   return commaList(numOperands: numOperands) { "operand\($0): operand\($0)Field" }
@@ -57,15 +60,15 @@ func calcFactory(numOperands: Int) -> String {
       public typealias CalcFn = Calculator\(numOperands)Op<TTarget, \(typeList(numOperands: numOperands))>.CalcFn
       let calcFn: CalcFn
 
-      init(targetId: FieldID, \(argList(numOperands: numOperands)), calcFn: @escaping CalcFn) {
+      init(targetId: FieldID, \(argIdList(numOperands: numOperands)), calcFn: @escaping CalcFn) {
           self.targetId = targetId
   \(initProperties(numOperands: numOperands))
           self.calcFn = calcFn
           super.init()
       }
 
-      public static func registerFactory(targetId: FieldID, \(argList(numOperands: numOperands)), calcFn: @escaping CalcFn) {
-          _ = Calculator\(numOperands)OpFactory(targetId: targetId, \(argPassList(numOperands: numOperands)), calcFn: calcFn)
+      public static func registerFactory(target: Field<TTarget>, \(argFieldList(numOperands: numOperands)), calcFn: @escaping CalcFn) {
+          _ = Calculator\(numOperands)OpFactory(targetId: target.id, \(argPassList(numOperands: numOperands)), calcFn: calcFn)
       }
 
       override func makeOrphanCalculator(network: BicycleNetwork) -> AnyCalculator? {

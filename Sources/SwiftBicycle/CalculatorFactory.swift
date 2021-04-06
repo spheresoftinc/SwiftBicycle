@@ -37,8 +37,8 @@ public class Calculator1OpFactory<TTarget: Equatable, TOperand1>: AnyCalculatorF
         super.init()
     }
 
-    public static func registerFactory(targetId: FieldID, operand1Id: FieldID, calcFn: @escaping CalcFn) {
-        _ = Calculator1OpFactory(targetId: targetId, operand1Id: operand1Id, calcFn: calcFn)
+    public static func registerFactory(target: Field<TTarget>, operand1: Field<TOperand1>, calcFn: @escaping CalcFn) {
+        _ = Calculator1OpFactory(targetId: target.id, operand1Id: operand1.id, calcFn: calcFn)
     }
 
     override func makeOrphanCalculator(network: BicycleNetwork) -> AnyCalculator? {
@@ -70,8 +70,8 @@ public class Calculator2OpFactory<TTarget: Equatable, TOperand1, TOperand2>: Any
         super.init()
     }
 
-    public static func registerFactory(targetId: FieldID, operand1Id: FieldID, operand2Id: FieldID, calcFn: @escaping CalcFn) {
-        _ = Calculator2OpFactory(targetId: targetId, operand1Id: operand1Id, operand2Id: operand2Id, calcFn: calcFn)
+    public static func registerFactory(target: Field<TTarget>, operand1: Field<TOperand1>, operand2: Field<TOperand2>, calcFn: @escaping CalcFn) {
+        _ = Calculator2OpFactory(targetId: target.id, operand1Id: operand1.id, operand2Id: operand2.id, calcFn: calcFn)
     }
 
     override func makeOrphanCalculator(network: BicycleNetwork) -> AnyCalculator? {
@@ -106,8 +106,8 @@ public class Calculator3OpFactory<TTarget: Equatable, TOperand1, TOperand2, TOpe
         super.init()
     }
 
-    public static func registerFactory(targetId: FieldID, operand1Id: FieldID, operand2Id: FieldID, operand3Id: FieldID, calcFn: @escaping CalcFn) {
-        _ = Calculator3OpFactory(targetId: targetId, operand1Id: operand1Id, operand2Id: operand2Id, operand3Id: operand3Id, calcFn: calcFn)
+    public static func registerFactory(target: Field<TTarget>, operand1: Field<TOperand1>, operand2: Field<TOperand2>, operand3: Field<TOperand3>, calcFn: @escaping CalcFn) {
+        _ = Calculator3OpFactory(targetId: target.id, operand1Id: operand1.id, operand2Id: operand2.id, operand3Id: operand3.id, calcFn: calcFn)
     }
 
     override func makeOrphanCalculator(network: BicycleNetwork) -> AnyCalculator? {
@@ -145,8 +145,8 @@ public class Calculator4OpFactory<TTarget: Equatable, TOperand1, TOperand2, TOpe
         super.init()
     }
 
-    public static func registerFactory(targetId: FieldID, operand1Id: FieldID, operand2Id: FieldID, operand3Id: FieldID, operand4Id: FieldID, calcFn: @escaping CalcFn) {
-        _ = Calculator4OpFactory(targetId: targetId, operand1Id: operand1Id, operand2Id: operand2Id, operand3Id: operand3Id, operand4Id: operand4Id, calcFn: calcFn)
+    public static func registerFactory(target: Field<TTarget>, operand1: Field<TOperand1>, operand2: Field<TOperand2>, operand3: Field<TOperand3>, operand4: Field<TOperand4>, calcFn: @escaping CalcFn) {
+        _ = Calculator4OpFactory(targetId: target.id, operand1Id: operand1.id, operand2Id: operand2.id, operand3Id: operand3.id, operand4Id: operand4.id, calcFn: calcFn)
     }
 
     override func makeOrphanCalculator(network: BicycleNetwork) -> AnyCalculator? {
@@ -187,8 +187,8 @@ public class Calculator5OpFactory<TTarget: Equatable, TOperand1, TOperand2, TOpe
         super.init()
     }
 
-    public static func registerFactory(targetId: FieldID, operand1Id: FieldID, operand2Id: FieldID, operand3Id: FieldID, operand4Id: FieldID, operand5Id: FieldID, calcFn: @escaping CalcFn) {
-        _ = Calculator5OpFactory(targetId: targetId, operand1Id: operand1Id, operand2Id: operand2Id, operand3Id: operand3Id, operand4Id: operand4Id, operand5Id: operand5Id, calcFn: calcFn)
+    public static func registerFactory(target: Field<TTarget>, operand1: Field<TOperand1>, operand2: Field<TOperand2>, operand3: Field<TOperand3>, operand4: Field<TOperand4>, operand5: Field<TOperand5>, calcFn: @escaping CalcFn) {
+        _ = Calculator5OpFactory(targetId: target.id, operand1Id: operand1.id, operand2Id: operand2.id, operand3Id: operand3.id, operand4Id: operand4.id, operand5Id: operand5.id, calcFn: calcFn)
     }
 
     override func makeOrphanCalculator(network: BicycleNetwork) -> AnyCalculator? {
@@ -232,8 +232,8 @@ public class Calculator6OpFactory<TTarget: Equatable, TOperand1, TOperand2, TOpe
         super.init()
     }
 
-    public static func registerFactory(targetId: FieldID, operand1Id: FieldID, operand2Id: FieldID, operand3Id: FieldID, operand4Id: FieldID, operand5Id: FieldID, operand6Id: FieldID, calcFn: @escaping CalcFn) {
-        _ = Calculator6OpFactory(targetId: targetId, operand1Id: operand1Id, operand2Id: operand2Id, operand3Id: operand3Id, operand4Id: operand4Id, operand5Id: operand5Id, operand6Id: operand6Id, calcFn: calcFn)
+    public static func registerFactory(target: Field<TTarget>, operand1: Field<TOperand1>, operand2: Field<TOperand2>, operand3: Field<TOperand3>, operand4: Field<TOperand4>, operand5: Field<TOperand5>, operand6: Field<TOperand6>, calcFn: @escaping CalcFn) {
+        _ = Calculator6OpFactory(targetId: target.id, operand1Id: operand1.id, operand2Id: operand2.id, operand3Id: operand3.id, operand4Id: operand4.id, operand5Id: operand5.id, operand6Id: operand6.id, calcFn: calcFn)
     }
 
     override func makeOrphanCalculator(network: BicycleNetwork) -> AnyCalculator? {
