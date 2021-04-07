@@ -168,7 +168,7 @@ public class BicycleNetwork {
         sortSetters()
 
         let len = setters.count
-        var done = false
+        var done = (len == 0)
         while !done {
             for i in 0..<len {
                 rollbackCalculators.removeAll()
