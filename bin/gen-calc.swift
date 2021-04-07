@@ -48,7 +48,7 @@ func hash(numOperands: Int) -> String {
 }
 
 func assertNotClear(numOperands: Int) -> String {
-  return newLineList(numOperands: numOperands) { "          assert(operand\($0).code != .clear)" }
+  return newLineList(numOperands: numOperands) { "          assert(!operand\($0).code.isEmpty())" }
 }
 
 func addSourceField(numOperands: Int) -> String {
@@ -58,7 +58,7 @@ func addSourceField(numOperands: Int) -> String {
 func isReady(numOperands: Int) -> String {
   return newLineList(numOperands: numOperands) { 
     """
-              guard operand\($0).code != .clear else {
+              guard !operand\($0).code.isEmpty() else {
                   return false
               }
     """

@@ -94,7 +94,7 @@ public class Calculator<TTarget: Equatable>: AnyCalculator {
         guard let result: TTarget = calcTarget() else { return true }
 
         // if the target is clear then propagate the result through the network
-        if target.code == .clear {
+        if target.code.isEmpty() {
             // every calc that acts is added to the rollbacks, and will be reversed if the network
             // becomes inconsistent
             network.addRollback(calculator: self)
@@ -113,426 +113,426 @@ public class Calculator<TTarget: Equatable>: AnyCalculator {
 
 // Code under this comment generated with gen-calc.swift. Do not edit.
 
-public class Calculator1Op<TTarget: Equatable, TOperand1>: Calculator<TTarget> {
+  public class Calculator1Op<TTarget: Equatable, TOperand1>: Calculator<TTarget> {
 
-    var operand1: Field<TOperand1>
+      var operand1: Field<TOperand1>
 
-    public typealias CalcFn = (TOperand1) -> TTarget
-    public typealias ReadyFn = (TOperand1) -> Bool
-    var calcFn: CalcFn
-    var readyFn: ReadyFn?
+      public typealias CalcFn = (TOperand1) -> TTarget
+      public typealias ReadyFn = (TOperand1) -> Bool
+      var calcFn: CalcFn
+      var readyFn: ReadyFn?
 
-    public init(network: BicycleNetwork, target: Field<TTarget>, operand1: Field<TOperand1>, calcFn: @escaping CalcFn, readyFn: ReadyFn? = nil) {
-        self.operand1 = operand1
+      public init(network: BicycleNetwork, target: Field<TTarget>, operand1: Field<TOperand1>, calcFn: @escaping CalcFn, readyFn: ReadyFn? = nil) {
+          self.operand1 = operand1
 
-        self.calcFn = calcFn
-        self.readyFn = readyFn
-        super.init(network: network, target: target)
-        operand1.addDependent(calculator: self)
+          self.calcFn = calcFn
+          self.readyFn = readyFn
+          super.init(network: network, target: target)
+          operand1.addDependent(calculator: self)
 
-    }
+      }
 
-    public override func hash(into hasher: inout Hasher) {
-        super.hash(into: &hasher)
-        operand1.id.hash(into: &hasher)
+      public override func hash(into hasher: inout Hasher) {
+          super.hash(into: &hasher)
+          operand1.id.hash(into: &hasher)
 
-    }
+      }
 
-    override func isReady() -> Bool {
-        guard operand1.code != .clear else {
-            return false
-        }
+      override func isReady() -> Bool {
+          guard !operand1.code.isEmpty() else {
+              return false
+          }
 
-        return self.readyFn?(self.operand1.value()) ?? true
-    }
+          return self.readyFn?(self.operand1.value()) ?? true
+      }
 
-    internal override func calcTarget() -> TTarget? {
-        assert(operand1.code != .clear)
+      internal override func calcTarget() -> TTarget? {
+          assert(!operand1.code.isEmpty())
 
-        return self.calcFn(self.operand1.value())
-    }
+          return self.calcFn(self.operand1.value())
+      }
 
-    override func makeRelationship() -> Relationship {
-        let r = super.makeRelationship()
-        r.addSourceField(fieldID: operand1.id)
+      override func makeRelationship() -> Relationship {
+          let r = super.makeRelationship()
+          r.addSourceField(fieldID: operand1.id)
 
-        return r
-    }
+          return r
+      }
 
-}
+  }
 
-public class Calculator2Op<TTarget: Equatable, TOperand1, TOperand2>: Calculator<TTarget> {
+  public class Calculator2Op<TTarget: Equatable, TOperand1, TOperand2>: Calculator<TTarget> {
 
-    var operand1: Field<TOperand1>
-    var operand2: Field<TOperand2>
+      var operand1: Field<TOperand1>
+      var operand2: Field<TOperand2>
 
-    public typealias CalcFn = (TOperand1, TOperand2) -> TTarget
-    public typealias ReadyFn = (TOperand1, TOperand2) -> Bool
-    var calcFn: CalcFn
-    var readyFn: ReadyFn?
+      public typealias CalcFn = (TOperand1, TOperand2) -> TTarget
+      public typealias ReadyFn = (TOperand1, TOperand2) -> Bool
+      var calcFn: CalcFn
+      var readyFn: ReadyFn?
 
-    public init(network: BicycleNetwork, target: Field<TTarget>, operand1: Field<TOperand1>, operand2: Field<TOperand2>, calcFn: @escaping CalcFn, readyFn: ReadyFn? = nil) {
-        self.operand1 = operand1
-        self.operand2 = operand2
+      public init(network: BicycleNetwork, target: Field<TTarget>, operand1: Field<TOperand1>, operand2: Field<TOperand2>, calcFn: @escaping CalcFn, readyFn: ReadyFn? = nil) {
+          self.operand1 = operand1
+          self.operand2 = operand2
 
-        self.calcFn = calcFn
-        self.readyFn = readyFn
-        super.init(network: network, target: target)
-        operand1.addDependent(calculator: self)
-        operand2.addDependent(calculator: self)
+          self.calcFn = calcFn
+          self.readyFn = readyFn
+          super.init(network: network, target: target)
+          operand1.addDependent(calculator: self)
+          operand2.addDependent(calculator: self)
 
-    }
+      }
 
-    public override func hash(into hasher: inout Hasher) {
-        super.hash(into: &hasher)
-        operand1.id.hash(into: &hasher)
-        operand2.id.hash(into: &hasher)
+      public override func hash(into hasher: inout Hasher) {
+          super.hash(into: &hasher)
+          operand1.id.hash(into: &hasher)
+          operand2.id.hash(into: &hasher)
 
-    }
+      }
 
-    override func isReady() -> Bool {
-        guard operand1.code != .clear else {
-            return false
-        }
-        guard operand2.code != .clear else {
-            return false
-        }
+      override func isReady() -> Bool {
+          guard !operand1.code.isEmpty() else {
+              return false
+          }
+          guard !operand2.code.isEmpty() else {
+              return false
+          }
 
-        return self.readyFn?(self.operand1.value(), self.operand2.value()) ?? true
-    }
+          return self.readyFn?(self.operand1.value(), self.operand2.value()) ?? true
+      }
 
-    internal override func calcTarget() -> TTarget? {
-        assert(operand1.code != .clear)
-        assert(operand2.code != .clear)
+      internal override func calcTarget() -> TTarget? {
+          assert(!operand1.code.isEmpty())
+          assert(!operand2.code.isEmpty())
 
-        return self.calcFn(self.operand1.value(), self.operand2.value())
-    }
+          return self.calcFn(self.operand1.value(), self.operand2.value())
+      }
 
-    override func makeRelationship() -> Relationship {
-        let r = super.makeRelationship()
-        r.addSourceField(fieldID: operand1.id)
-        r.addSourceField(fieldID: operand2.id)
+      override func makeRelationship() -> Relationship {
+          let r = super.makeRelationship()
+          r.addSourceField(fieldID: operand1.id)
+          r.addSourceField(fieldID: operand2.id)
 
-        return r
-    }
-
-}
-
-public class Calculator3Op<TTarget: Equatable, TOperand1, TOperand2, TOperand3>: Calculator<TTarget> {
-
-    var operand1: Field<TOperand1>
-    var operand2: Field<TOperand2>
-    var operand3: Field<TOperand3>
-
-    public typealias CalcFn = (TOperand1, TOperand2, TOperand3) -> TTarget
-    public typealias ReadyFn = (TOperand1, TOperand2, TOperand3) -> Bool
-    var calcFn: CalcFn
-    var readyFn: ReadyFn?
-
-    public init(network: BicycleNetwork, target: Field<TTarget>, operand1: Field<TOperand1>, operand2: Field<TOperand2>, operand3: Field<TOperand3>, calcFn: @escaping CalcFn, readyFn: ReadyFn? = nil) {
-        self.operand1 = operand1
-        self.operand2 = operand2
-        self.operand3 = operand3
-
-        self.calcFn = calcFn
-        self.readyFn = readyFn
-        super.init(network: network, target: target)
-        operand1.addDependent(calculator: self)
-        operand2.addDependent(calculator: self)
-        operand3.addDependent(calculator: self)
-
-    }
-
-    public override func hash(into hasher: inout Hasher) {
-        super.hash(into: &hasher)
-        operand1.id.hash(into: &hasher)
-        operand2.id.hash(into: &hasher)
-        operand3.id.hash(into: &hasher)
-
-    }
-
-    override func isReady() -> Bool {
-        guard operand1.code != .clear else {
-            return false
-        }
-        guard operand2.code != .clear else {
-            return false
-        }
-        guard operand3.code != .clear else {
-            return false
-        }
-
-        return self.readyFn?(self.operand1.value(), self.operand2.value(), self.operand3.value()) ?? true
-    }
-
-    internal override func calcTarget() -> TTarget? {
-        assert(operand1.code != .clear)
-        assert(operand2.code != .clear)
-        assert(operand3.code != .clear)
-
-        return self.calcFn(self.operand1.value(), self.operand2.value(), self.operand3.value())
-    }
-
-    override func makeRelationship() -> Relationship {
-        let r = super.makeRelationship()
-        r.addSourceField(fieldID: operand1.id)
-        r.addSourceField(fieldID: operand2.id)
-        r.addSourceField(fieldID: operand3.id)
-
-        return r
-    }
-
-}
-
-public class Calculator4Op<TTarget: Equatable, TOperand1, TOperand2, TOperand3, TOperand4>: Calculator<TTarget> {
-
-    var operand1: Field<TOperand1>
-    var operand2: Field<TOperand2>
-    var operand3: Field<TOperand3>
-    var operand4: Field<TOperand4>
-
-    public typealias CalcFn = (TOperand1, TOperand2, TOperand3, TOperand4) -> TTarget
-    public typealias ReadyFn = (TOperand1, TOperand2, TOperand3, TOperand4) -> Bool
-    var calcFn: CalcFn
-    var readyFn: ReadyFn?
-
-    public init(network: BicycleNetwork, target: Field<TTarget>, operand1: Field<TOperand1>, operand2: Field<TOperand2>, operand3: Field<TOperand3>, operand4: Field<TOperand4>, calcFn: @escaping CalcFn, readyFn: ReadyFn? = nil) {
-        self.operand1 = operand1
-        self.operand2 = operand2
-        self.operand3 = operand3
-        self.operand4 = operand4
-
-        self.calcFn = calcFn
-        self.readyFn = readyFn
-        super.init(network: network, target: target)
-        operand1.addDependent(calculator: self)
-        operand2.addDependent(calculator: self)
-        operand3.addDependent(calculator: self)
-        operand4.addDependent(calculator: self)
-
-    }
-
-    public override func hash(into hasher: inout Hasher) {
-        super.hash(into: &hasher)
-        operand1.id.hash(into: &hasher)
-        operand2.id.hash(into: &hasher)
-        operand3.id.hash(into: &hasher)
-        operand4.id.hash(into: &hasher)
-
-    }
-
-    override func isReady() -> Bool {
-        guard operand1.code != .clear else {
-            return false
-        }
-        guard operand2.code != .clear else {
-            return false
-        }
-        guard operand3.code != .clear else {
-            return false
-        }
-        guard operand4.code != .clear else {
-            return false
-        }
-
-        return self.readyFn?(self.operand1.value(), self.operand2.value(), self.operand3.value(), self.operand4.value()) ?? true
-    }
-
-    internal override func calcTarget() -> TTarget? {
-        assert(operand1.code != .clear)
-        assert(operand2.code != .clear)
-        assert(operand3.code != .clear)
-        assert(operand4.code != .clear)
-
-        return self.calcFn(self.operand1.value(), self.operand2.value(), self.operand3.value(), self.operand4.value())
-    }
-
-    override func makeRelationship() -> Relationship {
-        let r = super.makeRelationship()
-        r.addSourceField(fieldID: operand1.id)
-        r.addSourceField(fieldID: operand2.id)
-        r.addSourceField(fieldID: operand3.id)
-        r.addSourceField(fieldID: operand4.id)
-
-        return r
-    }
-
-}
-
-public class Calculator5Op<TTarget: Equatable, TOperand1, TOperand2, TOperand3, TOperand4, TOperand5>: Calculator<TTarget> {
-
-    var operand1: Field<TOperand1>
-    var operand2: Field<TOperand2>
-    var operand3: Field<TOperand3>
-    var operand4: Field<TOperand4>
-    var operand5: Field<TOperand5>
-
-    public typealias CalcFn = (TOperand1, TOperand2, TOperand3, TOperand4, TOperand5) -> TTarget
-    public typealias ReadyFn = (TOperand1, TOperand2, TOperand3, TOperand4, TOperand5) -> Bool
-    var calcFn: CalcFn
-    var readyFn: ReadyFn?
-
-    public init(network: BicycleNetwork, target: Field<TTarget>, operand1: Field<TOperand1>, operand2: Field<TOperand2>, operand3: Field<TOperand3>, operand4: Field<TOperand4>, operand5: Field<TOperand5>, calcFn: @escaping CalcFn, readyFn: ReadyFn? = nil) {
-        self.operand1 = operand1
-        self.operand2 = operand2
-        self.operand3 = operand3
-        self.operand4 = operand4
-        self.operand5 = operand5
-
-        self.calcFn = calcFn
-        self.readyFn = readyFn
-        super.init(network: network, target: target)
-        operand1.addDependent(calculator: self)
-        operand2.addDependent(calculator: self)
-        operand3.addDependent(calculator: self)
-        operand4.addDependent(calculator: self)
-        operand5.addDependent(calculator: self)
-
-    }
-
-    public override func hash(into hasher: inout Hasher) {
-        super.hash(into: &hasher)
-        operand1.id.hash(into: &hasher)
-        operand2.id.hash(into: &hasher)
-        operand3.id.hash(into: &hasher)
-        operand4.id.hash(into: &hasher)
-        operand5.id.hash(into: &hasher)
-
-    }
-
-    override func isReady() -> Bool {
-        guard operand1.code != .clear else {
-            return false
-        }
-        guard operand2.code != .clear else {
-            return false
-        }
-        guard operand3.code != .clear else {
-            return false
-        }
-        guard operand4.code != .clear else {
-            return false
-        }
-        guard operand5.code != .clear else {
-            return false
-        }
-
-        return self.readyFn?(self.operand1.value(), self.operand2.value(), self.operand3.value(), self.operand4.value(), self.operand5.value()) ?? true
-    }
-
-    internal override func calcTarget() -> TTarget? {
-        assert(operand1.code != .clear)
-        assert(operand2.code != .clear)
-        assert(operand3.code != .clear)
-        assert(operand4.code != .clear)
-        assert(operand5.code != .clear)
-
-        return self.calcFn(self.operand1.value(), self.operand2.value(), self.operand3.value(), self.operand4.value(), self.operand5.value())
-    }
-
-    override func makeRelationship() -> Relationship {
-        let r = super.makeRelationship()
-        r.addSourceField(fieldID: operand1.id)
-        r.addSourceField(fieldID: operand2.id)
-        r.addSourceField(fieldID: operand3.id)
-        r.addSourceField(fieldID: operand4.id)
-        r.addSourceField(fieldID: operand5.id)
-
-        return r
-    }
-
-}
-
-public class Calculator6Op<TTarget: Equatable, TOperand1, TOperand2, TOperand3, TOperand4, TOperand5, TOperand6>: Calculator<TTarget> {
-
-    var operand1: Field<TOperand1>
-    var operand2: Field<TOperand2>
-    var operand3: Field<TOperand3>
-    var operand4: Field<TOperand4>
-    var operand5: Field<TOperand5>
-    var operand6: Field<TOperand6>
-
-    public typealias CalcFn = (TOperand1, TOperand2, TOperand3, TOperand4, TOperand5, TOperand6) -> TTarget
-    public typealias ReadyFn = (TOperand1, TOperand2, TOperand3, TOperand4, TOperand5, TOperand6) -> Bool
-    var calcFn: CalcFn
-    var readyFn: ReadyFn?
-
-    public init(network: BicycleNetwork, target: Field<TTarget>, operand1: Field<TOperand1>, operand2: Field<TOperand2>, operand3: Field<TOperand3>, operand4: Field<TOperand4>, operand5: Field<TOperand5>, operand6: Field<TOperand6>, calcFn: @escaping CalcFn, readyFn: ReadyFn? = nil) {
-        self.operand1 = operand1
-        self.operand2 = operand2
-        self.operand3 = operand3
-        self.operand4 = operand4
-        self.operand5 = operand5
-        self.operand6 = operand6
-
-        self.calcFn = calcFn
-        self.readyFn = readyFn
-        super.init(network: network, target: target)
-        operand1.addDependent(calculator: self)
-        operand2.addDependent(calculator: self)
-        operand3.addDependent(calculator: self)
-        operand4.addDependent(calculator: self)
-        operand5.addDependent(calculator: self)
-        operand6.addDependent(calculator: self)
-
-    }
-
-    public override func hash(into hasher: inout Hasher) {
-        super.hash(into: &hasher)
-        operand1.id.hash(into: &hasher)
-        operand2.id.hash(into: &hasher)
-        operand3.id.hash(into: &hasher)
-        operand4.id.hash(into: &hasher)
-        operand5.id.hash(into: &hasher)
-        operand6.id.hash(into: &hasher)
-
-    }
-
-    override func isReady() -> Bool {
-        guard operand1.code != .clear else {
-            return false
-        }
-        guard operand2.code != .clear else {
-            return false
-        }
-        guard operand3.code != .clear else {
-            return false
-        }
-        guard operand4.code != .clear else {
-            return false
-        }
-        guard operand5.code != .clear else {
-            return false
-        }
-        guard operand6.code != .clear else {
-            return false
-        }
-
-        return self.readyFn?(self.operand1.value(), self.operand2.value(), self.operand3.value(), self.operand4.value(), self.operand5.value(), self.operand6.value()) ?? true
-    }
-
-    internal override func calcTarget() -> TTarget? {
-        assert(operand1.code != .clear)
-        assert(operand2.code != .clear)
-        assert(operand3.code != .clear)
-        assert(operand4.code != .clear)
-        assert(operand5.code != .clear)
-        assert(operand6.code != .clear)
-
-        return self.calcFn(self.operand1.value(), self.operand2.value(), self.operand3.value(), self.operand4.value(), self.operand5.value(), self.operand6.value())
-    }
-
-    override func makeRelationship() -> Relationship {
-        let r = super.makeRelationship()
-        r.addSourceField(fieldID: operand1.id)
-        r.addSourceField(fieldID: operand2.id)
-        r.addSourceField(fieldID: operand3.id)
-        r.addSourceField(fieldID: operand4.id)
-        r.addSourceField(fieldID: operand5.id)
-        r.addSourceField(fieldID: operand6.id)
-
-        return r
-    }
-
-}
+          return r
+      }
+
+  }
+
+  public class Calculator3Op<TTarget: Equatable, TOperand1, TOperand2, TOperand3>: Calculator<TTarget> {
+
+      var operand1: Field<TOperand1>
+      var operand2: Field<TOperand2>
+      var operand3: Field<TOperand3>
+
+      public typealias CalcFn = (TOperand1, TOperand2, TOperand3) -> TTarget
+      public typealias ReadyFn = (TOperand1, TOperand2, TOperand3) -> Bool
+      var calcFn: CalcFn
+      var readyFn: ReadyFn?
+
+      public init(network: BicycleNetwork, target: Field<TTarget>, operand1: Field<TOperand1>, operand2: Field<TOperand2>, operand3: Field<TOperand3>, calcFn: @escaping CalcFn, readyFn: ReadyFn? = nil) {
+          self.operand1 = operand1
+          self.operand2 = operand2
+          self.operand3 = operand3
+
+          self.calcFn = calcFn
+          self.readyFn = readyFn
+          super.init(network: network, target: target)
+          operand1.addDependent(calculator: self)
+          operand2.addDependent(calculator: self)
+          operand3.addDependent(calculator: self)
+
+      }
+
+      public override func hash(into hasher: inout Hasher) {
+          super.hash(into: &hasher)
+          operand1.id.hash(into: &hasher)
+          operand2.id.hash(into: &hasher)
+          operand3.id.hash(into: &hasher)
+
+      }
+
+      override func isReady() -> Bool {
+          guard !operand1.code.isEmpty() else {
+              return false
+          }
+          guard !operand2.code.isEmpty() else {
+              return false
+          }
+          guard !operand3.code.isEmpty() else {
+              return false
+          }
+
+          return self.readyFn?(self.operand1.value(), self.operand2.value(), self.operand3.value()) ?? true
+      }
+
+      internal override func calcTarget() -> TTarget? {
+          assert(!operand1.code.isEmpty())
+          assert(!operand2.code.isEmpty())
+          assert(!operand3.code.isEmpty())
+
+          return self.calcFn(self.operand1.value(), self.operand2.value(), self.operand3.value())
+      }
+
+      override func makeRelationship() -> Relationship {
+          let r = super.makeRelationship()
+          r.addSourceField(fieldID: operand1.id)
+          r.addSourceField(fieldID: operand2.id)
+          r.addSourceField(fieldID: operand3.id)
+
+          return r
+      }
+
+  }
+
+  public class Calculator4Op<TTarget: Equatable, TOperand1, TOperand2, TOperand3, TOperand4>: Calculator<TTarget> {
+
+      var operand1: Field<TOperand1>
+      var operand2: Field<TOperand2>
+      var operand3: Field<TOperand3>
+      var operand4: Field<TOperand4>
+
+      public typealias CalcFn = (TOperand1, TOperand2, TOperand3, TOperand4) -> TTarget
+      public typealias ReadyFn = (TOperand1, TOperand2, TOperand3, TOperand4) -> Bool
+      var calcFn: CalcFn
+      var readyFn: ReadyFn?
+
+      public init(network: BicycleNetwork, target: Field<TTarget>, operand1: Field<TOperand1>, operand2: Field<TOperand2>, operand3: Field<TOperand3>, operand4: Field<TOperand4>, calcFn: @escaping CalcFn, readyFn: ReadyFn? = nil) {
+          self.operand1 = operand1
+          self.operand2 = operand2
+          self.operand3 = operand3
+          self.operand4 = operand4
+
+          self.calcFn = calcFn
+          self.readyFn = readyFn
+          super.init(network: network, target: target)
+          operand1.addDependent(calculator: self)
+          operand2.addDependent(calculator: self)
+          operand3.addDependent(calculator: self)
+          operand4.addDependent(calculator: self)
+
+      }
+
+      public override func hash(into hasher: inout Hasher) {
+          super.hash(into: &hasher)
+          operand1.id.hash(into: &hasher)
+          operand2.id.hash(into: &hasher)
+          operand3.id.hash(into: &hasher)
+          operand4.id.hash(into: &hasher)
+
+      }
+
+      override func isReady() -> Bool {
+          guard !operand1.code.isEmpty() else {
+              return false
+          }
+          guard !operand2.code.isEmpty() else {
+              return false
+          }
+          guard !operand3.code.isEmpty() else {
+              return false
+          }
+          guard !operand4.code.isEmpty() else {
+              return false
+          }
+
+          return self.readyFn?(self.operand1.value(), self.operand2.value(), self.operand3.value(), self.operand4.value()) ?? true
+      }
+
+      internal override func calcTarget() -> TTarget? {
+          assert(!operand1.code.isEmpty())
+          assert(!operand2.code.isEmpty())
+          assert(!operand3.code.isEmpty())
+          assert(!operand4.code.isEmpty())
+
+          return self.calcFn(self.operand1.value(), self.operand2.value(), self.operand3.value(), self.operand4.value())
+      }
+
+      override func makeRelationship() -> Relationship {
+          let r = super.makeRelationship()
+          r.addSourceField(fieldID: operand1.id)
+          r.addSourceField(fieldID: operand2.id)
+          r.addSourceField(fieldID: operand3.id)
+          r.addSourceField(fieldID: operand4.id)
+
+          return r
+      }
+
+  }
+
+  public class Calculator5Op<TTarget: Equatable, TOperand1, TOperand2, TOperand3, TOperand4, TOperand5>: Calculator<TTarget> {
+
+      var operand1: Field<TOperand1>
+      var operand2: Field<TOperand2>
+      var operand3: Field<TOperand3>
+      var operand4: Field<TOperand4>
+      var operand5: Field<TOperand5>
+
+      public typealias CalcFn = (TOperand1, TOperand2, TOperand3, TOperand4, TOperand5) -> TTarget
+      public typealias ReadyFn = (TOperand1, TOperand2, TOperand3, TOperand4, TOperand5) -> Bool
+      var calcFn: CalcFn
+      var readyFn: ReadyFn?
+
+      public init(network: BicycleNetwork, target: Field<TTarget>, operand1: Field<TOperand1>, operand2: Field<TOperand2>, operand3: Field<TOperand3>, operand4: Field<TOperand4>, operand5: Field<TOperand5>, calcFn: @escaping CalcFn, readyFn: ReadyFn? = nil) {
+          self.operand1 = operand1
+          self.operand2 = operand2
+          self.operand3 = operand3
+          self.operand4 = operand4
+          self.operand5 = operand5
+
+          self.calcFn = calcFn
+          self.readyFn = readyFn
+          super.init(network: network, target: target)
+          operand1.addDependent(calculator: self)
+          operand2.addDependent(calculator: self)
+          operand3.addDependent(calculator: self)
+          operand4.addDependent(calculator: self)
+          operand5.addDependent(calculator: self)
+
+      }
+
+      public override func hash(into hasher: inout Hasher) {
+          super.hash(into: &hasher)
+          operand1.id.hash(into: &hasher)
+          operand2.id.hash(into: &hasher)
+          operand3.id.hash(into: &hasher)
+          operand4.id.hash(into: &hasher)
+          operand5.id.hash(into: &hasher)
+
+      }
+
+      override func isReady() -> Bool {
+          guard !operand1.code.isEmpty() else {
+              return false
+          }
+          guard !operand2.code.isEmpty() else {
+              return false
+          }
+          guard !operand3.code.isEmpty() else {
+              return false
+          }
+          guard !operand4.code.isEmpty() else {
+              return false
+          }
+          guard !operand5.code.isEmpty() else {
+              return false
+          }
+
+          return self.readyFn?(self.operand1.value(), self.operand2.value(), self.operand3.value(), self.operand4.value(), self.operand5.value()) ?? true
+      }
+
+      internal override func calcTarget() -> TTarget? {
+          assert(!operand1.code.isEmpty())
+          assert(!operand2.code.isEmpty())
+          assert(!operand3.code.isEmpty())
+          assert(!operand4.code.isEmpty())
+          assert(!operand5.code.isEmpty())
+
+          return self.calcFn(self.operand1.value(), self.operand2.value(), self.operand3.value(), self.operand4.value(), self.operand5.value())
+      }
+
+      override func makeRelationship() -> Relationship {
+          let r = super.makeRelationship()
+          r.addSourceField(fieldID: operand1.id)
+          r.addSourceField(fieldID: operand2.id)
+          r.addSourceField(fieldID: operand3.id)
+          r.addSourceField(fieldID: operand4.id)
+          r.addSourceField(fieldID: operand5.id)
+
+          return r
+      }
+
+  }
+
+  public class Calculator6Op<TTarget: Equatable, TOperand1, TOperand2, TOperand3, TOperand4, TOperand5, TOperand6>: Calculator<TTarget> {
+
+      var operand1: Field<TOperand1>
+      var operand2: Field<TOperand2>
+      var operand3: Field<TOperand3>
+      var operand4: Field<TOperand4>
+      var operand5: Field<TOperand5>
+      var operand6: Field<TOperand6>
+
+      public typealias CalcFn = (TOperand1, TOperand2, TOperand3, TOperand4, TOperand5, TOperand6) -> TTarget
+      public typealias ReadyFn = (TOperand1, TOperand2, TOperand3, TOperand4, TOperand5, TOperand6) -> Bool
+      var calcFn: CalcFn
+      var readyFn: ReadyFn?
+
+      public init(network: BicycleNetwork, target: Field<TTarget>, operand1: Field<TOperand1>, operand2: Field<TOperand2>, operand3: Field<TOperand3>, operand4: Field<TOperand4>, operand5: Field<TOperand5>, operand6: Field<TOperand6>, calcFn: @escaping CalcFn, readyFn: ReadyFn? = nil) {
+          self.operand1 = operand1
+          self.operand2 = operand2
+          self.operand3 = operand3
+          self.operand4 = operand4
+          self.operand5 = operand5
+          self.operand6 = operand6
+
+          self.calcFn = calcFn
+          self.readyFn = readyFn
+          super.init(network: network, target: target)
+          operand1.addDependent(calculator: self)
+          operand2.addDependent(calculator: self)
+          operand3.addDependent(calculator: self)
+          operand4.addDependent(calculator: self)
+          operand5.addDependent(calculator: self)
+          operand6.addDependent(calculator: self)
+
+      }
+
+      public override func hash(into hasher: inout Hasher) {
+          super.hash(into: &hasher)
+          operand1.id.hash(into: &hasher)
+          operand2.id.hash(into: &hasher)
+          operand3.id.hash(into: &hasher)
+          operand4.id.hash(into: &hasher)
+          operand5.id.hash(into: &hasher)
+          operand6.id.hash(into: &hasher)
+
+      }
+
+      override func isReady() -> Bool {
+          guard !operand1.code.isEmpty() else {
+              return false
+          }
+          guard !operand2.code.isEmpty() else {
+              return false
+          }
+          guard !operand3.code.isEmpty() else {
+              return false
+          }
+          guard !operand4.code.isEmpty() else {
+              return false
+          }
+          guard !operand5.code.isEmpty() else {
+              return false
+          }
+          guard !operand6.code.isEmpty() else {
+              return false
+          }
+
+          return self.readyFn?(self.operand1.value(), self.operand2.value(), self.operand3.value(), self.operand4.value(), self.operand5.value(), self.operand6.value()) ?? true
+      }
+
+      internal override func calcTarget() -> TTarget? {
+          assert(!operand1.code.isEmpty())
+          assert(!operand2.code.isEmpty())
+          assert(!operand3.code.isEmpty())
+          assert(!operand4.code.isEmpty())
+          assert(!operand5.code.isEmpty())
+          assert(!operand6.code.isEmpty())
+
+          return self.calcFn(self.operand1.value(), self.operand2.value(), self.operand3.value(), self.operand4.value(), self.operand5.value(), self.operand6.value())
+      }
+
+      override func makeRelationship() -> Relationship {
+          let r = super.makeRelationship()
+          r.addSourceField(fieldID: operand1.id)
+          r.addSourceField(fieldID: operand2.id)
+          r.addSourceField(fieldID: operand3.id)
+          r.addSourceField(fieldID: operand4.id)
+          r.addSourceField(fieldID: operand5.id)
+          r.addSourceField(fieldID: operand6.id)
+
+          return r
+      }
+
+  }
 

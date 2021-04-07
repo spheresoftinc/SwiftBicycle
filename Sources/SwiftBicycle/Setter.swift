@@ -111,7 +111,7 @@ public class SetterConstant<T>: AnySetter {
     }
 
     override func setField() -> Bool {
-        if target.code == .clear {
+        if target.code.isEmpty() {
             if target.setValue(value: self.value, code: .set) {
                 return true
             } else {
@@ -127,12 +127,43 @@ public class SetterConstant<T>: AnySetter {
 
 }
 
+public class SetterError<T>: AnySetter {
+
+    public typealias ValueType = T
+    let target: Field<T>
+    let text: String
+
+    public init(priorityLevel: PriorityLevel = .normal, target: Field<T>, text: String) {
+        self.target = target
+        self.text = text
+
+        super.init(priorityLevel: priorityLevel)
+    }
+
+    override func anyTarget() -> AnyField {
+        return target
+    }
+
+    override func isUserProvided() -> Bool {
+        return true
+    }
+
+    override func setField() -> Bool {
+        if target.code == .clear {
+            target.code = .error(text: text)
+            return true
+        }
+        return false
+    }
+
+}
+
 // Convenience function for using constant setters
 public extension Field where Field.ValueType: Equatable {
     func set(value: T) {
         guard
             let network = self.network,
-            self.code == .clear || self.value() != value
+            self.code.isEmpty() || self.value() != value
         else { return }
 
         network.adoptSetter(setter: SetterConstant(target: self, value: value))

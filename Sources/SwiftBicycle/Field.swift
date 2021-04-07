@@ -24,12 +24,22 @@ public class AnyField: Hashable {
     var dependents = Set<AnyCalculator>()
     static var calculatorFactories = [AnyCalculatorFactory]()
 
-    public enum Code: CaseIterable {
+    public enum Code: Equatable {
         case clear
+        case error(text: String)
         case set
         case calced
         case defaultValue
         case implied
+
+        func isEmpty() -> Bool {
+            switch self {
+            case .clear, .error:
+                return true
+            case .set, .calced, .defaultValue, .implied:
+                return false
+            }
+        }
     }
 
     public var code: Code = .clear
@@ -106,7 +116,7 @@ public class Field<T>: AnyField {
     }
 
     public func value() -> T {
-        assert(self.maybeValue != nil && self.code != .clear)
+        assert(self.maybeValue != nil && !self.code.isEmpty())
         return self.maybeValue!
     }
 }
@@ -119,7 +129,7 @@ public extension Field where Field.ValueType: Equatable & LosslessStringConverti
     }
 
     internal func getText() -> String {
-        if self.code != .clear {
+        if !self.code.isEmpty() {
             return String(self.value())
         } else {
             return ""

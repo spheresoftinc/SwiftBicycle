@@ -87,4 +87,36 @@ class FieldTests: XCTestCase {
         XCTAssertEqual(sum.code, .set)
         XCTAssertEqual(sum.value(), 12.0)
     }
+
+    func testFieldCalculatorErrors() {
+        let network = BicycleNetwork()
+
+        let feet = Field<Double>()
+        network.adoptField(field: feet)
+
+        let inches = Field<Double>()
+        network.adoptField(field: inches)
+
+        Calculator1OpFactory.registerFactory(target: inches, operand1: feet) { $0 * 12.0 }
+        Calculator1OpFactory.registerFactory(target: feet, operand1: inches) { $0 / 12.0 }
+
+        network.connectCalculators()
+
+        let setter = SetterError(target: feet, text: "hello")
+        network.adoptSetter(setter: setter)
+
+        XCTAssertEqual(feet.code, .error(text: "hello"))
+        XCTAssertEqual(inches.code, .clear)
+
+        let setter2 = SetterConstant(target: inches, value: 12.0)
+        network.adoptSetter(setter: setter2)
+        XCTAssertEqual(feet.code, .calced)
+        XCTAssertEqual(feet.value(), 1.0)
+        XCTAssertEqual(inches.code, .set)
+        XCTAssertEqual(inches.value(), 12.0)
+
+        network.dropSetter(setter: setter2)
+        XCTAssertEqual(feet.code, .error(text: "hello"))
+        XCTAssertEqual(inches.code, .clear)
+    }
 }
