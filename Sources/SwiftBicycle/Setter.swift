@@ -93,8 +93,8 @@ public class AnySetter: Comparable, Hashable {
 public class SetterConstant<T>: AnySetter {
 
     public typealias ValueType = T
-    var target: Field<T>
-    var value: T
+    let target: Field<T>
+    let value: T
 
     public init(priorityLevel: PriorityLevel = .normal, target: Field<T>, value: T) {
         self.target = target
