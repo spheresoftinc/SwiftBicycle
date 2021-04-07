@@ -169,3 +169,13 @@ public extension Field where Field.ValueType: Equatable {
         network.adoptSetter(setter: SetterConstant(target: self, value: value))
     }
 }
+
+public extension Field where Field.ValueType: Equatable {
+    func setError(text: String) {
+        guard
+            let network = self.network
+        else { return }
+
+        network.adoptSetter(setter: SetterError(target: self, text: text))
+    }
+}

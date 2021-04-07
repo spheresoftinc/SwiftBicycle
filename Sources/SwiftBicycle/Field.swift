@@ -116,6 +116,7 @@ public class Field<T>: AnyField {
 
     public typealias ValueType = T
     private var maybeValue: T?
+    public var formatter: Formatter?
 
     public func setValue(value: T, code: Code) -> Bool
     {
@@ -138,7 +139,13 @@ public extension Field where Field.ValueType: Equatable & LosslessStringConverti
     }
 
     internal func getText() -> String {
+        if case let .error(text) = self.code {
+            return text
+        }
         if !self.code.isEmpty() {
+            if let formatter = self.formatter {
+                return formatter.string(for: self.value) ?? ""
+            }
             return String(self.value())
         } else {
             return ""
