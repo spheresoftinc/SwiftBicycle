@@ -148,6 +148,7 @@ public class BicycleNetwork {
         if let setterIndex = setters.firstIndex(where: { $0 === setter }) {
             let setter = setters.remove(at: setterIndex)
             setter.network = nil
+            doAutoCalc()
         }
     }
 
