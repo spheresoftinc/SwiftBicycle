@@ -40,6 +40,15 @@ public class AnyField: Hashable {
                 return false
             }
         }
+
+        func isError() -> Bool {
+            switch self {
+            case .error:
+                return true
+            case .clear, .set, .calced, .defaultValue, .implied:
+                return false
+            }
+        }
     }
 
     public var code: Code = .clear

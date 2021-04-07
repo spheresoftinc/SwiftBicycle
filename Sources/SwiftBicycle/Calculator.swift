@@ -94,7 +94,7 @@ public class Calculator<TTarget: Equatable>: AnyCalculator {
         guard let result: TTarget = calcTarget() else { return true }
 
         // if the target is clear then propagate the result through the network
-        if target.code.isEmpty() {
+        if target.code == .clear {
             // every calc that acts is added to the rollbacks, and will be reversed if the network
             // becomes inconsistent
             network.addRollback(calculator: self)
@@ -106,7 +106,7 @@ public class Calculator<TTarget: Equatable>: AnyCalculator {
             return target.setValue(value: result, code: .calced)
         } else {
             // Compare to existing value, to see if the sources are consistent with the target.
-            return target.value() == result
+            return !target.code.isError() && target.value() == result
         }
     }
 }
