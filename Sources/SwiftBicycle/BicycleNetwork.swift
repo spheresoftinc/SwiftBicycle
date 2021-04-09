@@ -98,11 +98,11 @@ public class BicycleNetwork {
             .forEach { self.adoptCalculator(calculator: $0) }
     }
 
-    func adoptCalculator(calculator: AnyCalculator) {
+    public func adoptCalculator(calculator: AnyCalculator) {
         calculators.insert(calculator)
     }
 
-    func dropCalculator(calculator: AnyCalculator) {
+    public func dropCalculator(calculator: AnyCalculator) {
         calculators.remove(calculator)
     }
 
