@@ -16,6 +16,7 @@ public struct FieldID: Hashable {
 
 public class AnyField: Hashable {
     public let id: FieldID
+    public let name: String
     public internal(set) weak var network: BicycleNetwork? {
         willSet {
             assert(newValue == nil || self.network == nil)
@@ -53,8 +54,9 @@ public class AnyField: Hashable {
 
     public var code: Code = .clear
 
-    public init(id: FieldID = FieldID()) {
+    public init(id: FieldID = FieldID(), name: String? = nil) {
         self.id = id
+        self.name = name ?? id.uuid.uuidString
     }
 
     func clear() {
@@ -73,8 +75,10 @@ public class AnyField: Hashable {
         for dependent in dependents {
             if dependent.setField() {
                 // Do nothing when propagation succeeds.
+                BicycleLog("Calculator propagate succeeded")
             }
             else {
+                BicycleLog("Calculator propagate failed")
                 return false
             }
         }

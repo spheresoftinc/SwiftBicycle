@@ -78,7 +78,9 @@ public class Calculator<TTarget: Equatable>: AnyCalculator {
         // check to see if this calculator is ready.  Typically this means that all of the source
         // operands are not clear, but in some cases, the actual values of the fields may determine
         // if this calculator is ready (i.e. value-dependent calculators).
+        BicycleLog("Trying to calculate \(target.name)")
         guard isReady() else {
+            BicycleLog("Calculator not ready")
             return true // not ready, but that's ok
         }
 
@@ -88,6 +90,7 @@ public class Calculator<TTarget: Equatable>: AnyCalculator {
         // if it has, we may not want to use it.
         let r = makeRelationship()
         guard !network.relationshipWasUsed(relationship: r) else {
+            BicycleLog("Calculator is redundant")
             return true
         }
 
@@ -103,9 +106,15 @@ public class Calculator<TTarget: Equatable>: AnyCalculator {
             network.addUsedRelationship(relationship: r)
 
             // Set the value with a calc code...
+            BicycleLog("Calculator trying to set \(target.name) to \(result)")
             return target.setValue(value: result, code: .calced)
         } else {
             // Compare to existing value, to see if the sources are consistent with the target.
+            if target.code.isError() {
+                BicycleLog("The target has code set to .error")
+            } else {
+                BicycleLog("The calculator wants to set \(target.name) to \(result) and already has the value \(target.value())")
+            }
             return !target.code.isError() && (target.isEqual?(target.value(), result) ?? (target.value() == result))
         }
     }

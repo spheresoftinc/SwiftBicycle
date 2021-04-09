@@ -21,10 +21,10 @@ class FieldTests: XCTestCase {
     func testFieldCalculator() {
         let network = BicycleNetwork()
 
-        let feet = Field<Double>()
+        let feet = Field<Double>(name: "feet")
         network.adoptField(field: feet)
 
-        let inches = Field<Double>()
+        let inches = Field<Double>(name: "inches")
         network.adoptField(field: inches)
 
         Calculator1OpFactory.registerFactory(target: inches, operand0: feet) { $0 * 12.0 }
