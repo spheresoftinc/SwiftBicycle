@@ -163,7 +163,7 @@ public extension Field where Field.ValueType: Equatable {
     func set(value: T) {
         guard
             let network = self.network,
-            self.code.isEmpty() || self.value() != value
+            self.code.isEmpty() || !(self.isEqual?(self.value(), value) ?? (self.value() == value))
         else { return }
 
         network.adoptSetter(setter: SetterConstant(target: self, value: value))

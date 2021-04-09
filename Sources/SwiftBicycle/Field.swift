@@ -117,6 +117,7 @@ public class Field<T>: AnyField {
     public typealias ValueType = T
     private var maybeValue: T?
     public var formatter: Formatter?
+    public var isEqual: ((T, T) -> Bool)?
 
     public func setValue(value: T, code: Code) -> Bool
     {

@@ -106,7 +106,7 @@ public class Calculator<TTarget: Equatable>: AnyCalculator {
             return target.setValue(value: result, code: .calced)
         } else {
             // Compare to existing value, to see if the sources are consistent with the target.
-            return !target.code.isError() && target.value() == result
+            return !target.code.isError() && (target.isEqual?(target.value(), result) ?? (target.value() == result))
         }
     }
 }
