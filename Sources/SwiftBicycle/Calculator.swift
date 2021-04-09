@@ -112,10 +112,11 @@ public class Calculator<TTarget: Equatable>: AnyCalculator {
             // Compare to existing value, to see if the sources are consistent with the target.
             if target.code.isError() {
                 BicycleLog("The target has code set to .error")
+                return false
             } else {
                 BicycleLog("The calculator wants to set \(target.name) to \(result) and already has the value \(target.value())")
+                return target.valueIsEqualTo(value: result)
             }
-            return !target.code.isError() && (target.isEqual?(target.value(), result) ?? (target.value() == result))
         }
     }
 }

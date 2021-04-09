@@ -136,6 +136,19 @@ public class Field<T>: AnyField {
     }
 }
 
+public extension Field where Field.ValueType: Equatable {
+    func valueIsEqualTo(value: T) -> Bool {
+        if let isEqual = self.isEqual {
+            return isEqual(self.value(), value)
+        } else if let tgtEquatable = self.value() as? FieldValueEquatable,
+                  let resEquatable = value as? FieldValueEquatable {
+            return tgtEquatable.fieldValueIsEqualTo(value: resEquatable)
+        } else {
+            return self.value() == value
+        }
+    }
+}
+
 public extension Field where Field.ValueType: Equatable & LosslessStringConvertible {
     internal func set(text: String) {
         if let val = T(text) {
