@@ -20,35 +20,35 @@ func newLineList(numOperands: Int, arg: (Int) -> String) -> String {
 }
 
 func typeList(numOperands: Int) -> String {
-  return commaList(numOperands: numOperands) { "TOperand\($0)" }
+  return commaList(numOperands: numOperands) { "TOperand\($0-1)" }
 }
 
 func argFieldList(numOperands: Int) -> String {
-  return commaList(numOperands: numOperands) { "operand\($0): Field<TOperand\($0)>" }
+  return commaList(numOperands: numOperands) { "operand\($0-1): Field<TOperand\($0-1)>" }
 }
 
 func argIdList(numOperands: Int) -> String {
-  return commaList(numOperands: numOperands) { "operand\($0)Id: FieldID" }
+  return commaList(numOperands: numOperands) { "operand\($0-1)Id: FieldID" }
 }
 
 func argPassList(numOperands: Int) -> String {
-  return commaList(numOperands: numOperands) { "operand\($0)Id: operand\($0).id" }
+  return commaList(numOperands: numOperands) { "operand\($0-1)Id: operand\($0-1).id" }
 }
 
 func argPassFieldList(numOperands: Int) -> String {
-  return commaList(numOperands: numOperands) { "operand\($0): operand\($0)Field" }
+  return commaList(numOperands: numOperands) { "operand\($0-1): operand\($0-1)Field" }
 }
 
 func properties(numOperands: Int) -> String {
-  return newLineList(numOperands: numOperands) { "    let operand\($0)Id: FieldID" }
+  return newLineList(numOperands: numOperands) { "    let operand\($0-1)Id: FieldID" }
 }
 
 func initProperties(numOperands: Int) -> String {
-  return newLineList(numOperands: numOperands) { "        self.operand\($0)Id = operand\($0)Id" }
+  return newLineList(numOperands: numOperands) { "        self.operand\($0-1)Id = operand\($0-1)Id" }
 }
 
 func getField(numOperands: Int) -> String {
-  return newLineList(numOperands: numOperands) { "            let operand\($0)Field = network.getField(id: operand\($0)Id) as? Field<TOperand\($0)>," }
+  return newLineList(numOperands: numOperands) { "            let operand\($0-1)Field = network.getField(id: operand\($0-1)Id) as? Field<TOperand\($0-1)>," }
 }
 
 func calcFactory(numOperands: Int) -> String {

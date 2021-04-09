@@ -20,45 +20,45 @@ func newLineList(numOperands: Int, arg: (Int) -> String) -> String {
 }
 
 func typeList(numOperands: Int) -> String {
-  return commaList(numOperands: numOperands) { "TOperand\($0)" }
+  return commaList(numOperands: numOperands) { "TOperand\($0-1)" }
 }
 
 func argList(numOperands: Int) -> String {
-  return commaList(numOperands: numOperands) { "operand\($0): Field<TOperand\($0)>" }
+  return commaList(numOperands: numOperands) { "operand\($0-1): Field<TOperand\($0-1)>" }
 }
 
 func valueList(numOperands: Int) -> String {
-  return commaList(numOperands: numOperands) { "self.operand\($0).value()" }
+  return commaList(numOperands: numOperands) { "self.operand\($0-1).value()" }
 }
 
 func properties(numOperands: Int) -> String {
-  return newLineList(numOperands: numOperands) { "      var operand\($0): Field<TOperand\($0)>" }
+  return newLineList(numOperands: numOperands) { "      var operand\($0-1): Field<TOperand\($0-1)>" }
 }
 
 func initProperties(numOperands: Int) -> String {
-  return newLineList(numOperands: numOperands) { "          self.operand\($0) = operand\($0)" }
+  return newLineList(numOperands: numOperands) { "          self.operand\($0-1) = operand\($0-1)" }
 }
 
 func addDependent(numOperands: Int) -> String {
-  return newLineList(numOperands: numOperands) { "          operand\($0).addDependent(calculator: self)" }
+  return newLineList(numOperands: numOperands) { "          operand\($0-1).addDependent(calculator: self)" }
 }
 
 func hash(numOperands: Int) -> String {
-  return newLineList(numOperands: numOperands) { "          operand\($0).id.hash(into: &hasher)" }
+  return newLineList(numOperands: numOperands) { "          operand\($0-1).id.hash(into: &hasher)" }
 }
 
 func assertNotClear(numOperands: Int) -> String {
-  return newLineList(numOperands: numOperands) { "          assert(!operand\($0).code.isEmpty())" }
+  return newLineList(numOperands: numOperands) { "          assert(!operand\($0-1).code.isEmpty())" }
 }
 
 func addSourceField(numOperands: Int) -> String {
-  return newLineList(numOperands: numOperands) { "          r.addSourceField(fieldID: operand\($0).id)" }
+  return newLineList(numOperands: numOperands) { "          r.addSourceField(fieldID: operand\($0-1).id)" }
 }
 
 func isReady(numOperands: Int) -> String {
   return newLineList(numOperands: numOperands) { 
     """
-              guard !operand\($0).code.isEmpty() else {
+              guard !operand\($0-1).code.isEmpty() else {
                   return false
               }
     """
