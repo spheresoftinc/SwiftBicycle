@@ -75,7 +75,7 @@ extension Field where Field.ValueType: Equatable & LosslessStringConvertible {
         set {
             guard let v = newValue.value else {
                 guard let text = newValue.text else {
-                    self.network?.dropSetters(field: self)
+                    self.network?.dropUserProvidedSetters(field: self)
                     return
                 }
                 self.setError(text: text)
