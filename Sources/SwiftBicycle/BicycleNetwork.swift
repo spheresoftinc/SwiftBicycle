@@ -96,6 +96,7 @@ public class BicycleNetwork {
         AnyField.calculatorFactories
             .compactMap { $0.makeOrphanCalculator(network: self) }
             .forEach { self.adoptCalculator(calculator: $0) }
+        doAutoCalc()
     }
 
     public func adoptCalculator(calculator: AnyCalculator) {
@@ -223,7 +224,7 @@ public class BicycleNetwork {
         setters.removeAll { setter in
             return setter.isUserProvided() && setter.isMatch(field: field)
         }
-
+        doAutoCalc()
     }
 
 }
