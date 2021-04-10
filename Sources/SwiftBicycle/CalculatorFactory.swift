@@ -28,17 +28,20 @@ public class Calculator1OpFactory<TTarget: Equatable, TOperand0>: AnyCalculatorF
 
     public typealias CalcFn = Calculator1Op<TTarget, TOperand0>.CalcFn
     let calcFn: CalcFn
+    public typealias ReadyFn = Calculator1Op<TTarget, TOperand0>.ReadyFn
+    let readyFn: ReadyFn?
 
-    init(targetId: FieldID, operand0Id: FieldID, calcFn: @escaping CalcFn) {
+    init(targetId: FieldID, operand0Id: FieldID, calcFn: @escaping CalcFn, readyFn: ReadyFn? = nil) {
         self.targetId = targetId
         self.operand0Id = operand0Id
 
         self.calcFn = calcFn
+        self.readyFn = readyFn
         super.init()
     }
 
-    public static func registerFactory(target: Field<TTarget>, operand0: Field<TOperand0>, calcFn: @escaping CalcFn) {
-        _ = Calculator1OpFactory(targetId: target.id, operand0Id: operand0.id, calcFn: calcFn)
+    public static func registerFactory(target: Field<TTarget>, operand0: Field<TOperand0>, calcFn: @escaping CalcFn, readyFn: ReadyFn? = nil) {
+        _ = Calculator1OpFactory(targetId: target.id, operand0Id: operand0.id, calcFn: calcFn, readyFn: readyFn)
     }
 
     override func makeOrphanCalculator(network: BicycleNetwork) -> AnyCalculator? {
@@ -48,7 +51,7 @@ public class Calculator1OpFactory<TTarget: Equatable, TOperand0>: AnyCalculatorF
             let targetField = network.getField(id: targetId) as? Field<TTarget>
         else { return nil }
 
-        return Calculator1Op<TTarget, TOperand0>(network: network, target: targetField, operand0: operand0Field, calcFn: calcFn)
+        return Calculator1Op<TTarget, TOperand0>(network: network, target: targetField, operand0: operand0Field, calcFn: calcFn, readyFn: readyFn)
     }
 
 }
@@ -60,18 +63,21 @@ public class Calculator2OpFactory<TTarget: Equatable, TOperand0, TOperand1>: Any
 
     public typealias CalcFn = Calculator2Op<TTarget, TOperand0, TOperand1>.CalcFn
     let calcFn: CalcFn
+    public typealias ReadyFn = Calculator2Op<TTarget, TOperand0, TOperand1>.ReadyFn
+    let readyFn: ReadyFn?
 
-    init(targetId: FieldID, operand0Id: FieldID, operand1Id: FieldID, calcFn: @escaping CalcFn) {
+    init(targetId: FieldID, operand0Id: FieldID, operand1Id: FieldID, calcFn: @escaping CalcFn, readyFn: ReadyFn? = nil) {
         self.targetId = targetId
         self.operand0Id = operand0Id
         self.operand1Id = operand1Id
 
         self.calcFn = calcFn
+        self.readyFn = readyFn
         super.init()
     }
 
-    public static func registerFactory(target: Field<TTarget>, operand0: Field<TOperand0>, operand1: Field<TOperand1>, calcFn: @escaping CalcFn) {
-        _ = Calculator2OpFactory(targetId: target.id, operand0Id: operand0.id, operand1Id: operand1.id, calcFn: calcFn)
+    public static func registerFactory(target: Field<TTarget>, operand0: Field<TOperand0>, operand1: Field<TOperand1>, calcFn: @escaping CalcFn, readyFn: ReadyFn? = nil) {
+        _ = Calculator2OpFactory(targetId: target.id, operand0Id: operand0.id, operand1Id: operand1.id, calcFn: calcFn, readyFn: readyFn)
     }
 
     override func makeOrphanCalculator(network: BicycleNetwork) -> AnyCalculator? {
@@ -82,7 +88,7 @@ public class Calculator2OpFactory<TTarget: Equatable, TOperand0, TOperand1>: Any
             let targetField = network.getField(id: targetId) as? Field<TTarget>
         else { return nil }
 
-        return Calculator2Op<TTarget, TOperand0, TOperand1>(network: network, target: targetField, operand0: operand0Field, operand1: operand1Field, calcFn: calcFn)
+        return Calculator2Op<TTarget, TOperand0, TOperand1>(network: network, target: targetField, operand0: operand0Field, operand1: operand1Field, calcFn: calcFn, readyFn: readyFn)
     }
 
 }
@@ -95,19 +101,22 @@ public class Calculator3OpFactory<TTarget: Equatable, TOperand0, TOperand1, TOpe
 
     public typealias CalcFn = Calculator3Op<TTarget, TOperand0, TOperand1, TOperand2>.CalcFn
     let calcFn: CalcFn
+    public typealias ReadyFn = Calculator3Op<TTarget, TOperand0, TOperand1, TOperand2>.ReadyFn
+    let readyFn: ReadyFn?
 
-    init(targetId: FieldID, operand0Id: FieldID, operand1Id: FieldID, operand2Id: FieldID, calcFn: @escaping CalcFn) {
+    init(targetId: FieldID, operand0Id: FieldID, operand1Id: FieldID, operand2Id: FieldID, calcFn: @escaping CalcFn, readyFn: ReadyFn? = nil) {
         self.targetId = targetId
         self.operand0Id = operand0Id
         self.operand1Id = operand1Id
         self.operand2Id = operand2Id
 
         self.calcFn = calcFn
+        self.readyFn = readyFn
         super.init()
     }
 
-    public static func registerFactory(target: Field<TTarget>, operand0: Field<TOperand0>, operand1: Field<TOperand1>, operand2: Field<TOperand2>, calcFn: @escaping CalcFn) {
-        _ = Calculator3OpFactory(targetId: target.id, operand0Id: operand0.id, operand1Id: operand1.id, operand2Id: operand2.id, calcFn: calcFn)
+    public static func registerFactory(target: Field<TTarget>, operand0: Field<TOperand0>, operand1: Field<TOperand1>, operand2: Field<TOperand2>, calcFn: @escaping CalcFn, readyFn: ReadyFn? = nil) {
+        _ = Calculator3OpFactory(targetId: target.id, operand0Id: operand0.id, operand1Id: operand1.id, operand2Id: operand2.id, calcFn: calcFn, readyFn: readyFn)
     }
 
     override func makeOrphanCalculator(network: BicycleNetwork) -> AnyCalculator? {
@@ -119,7 +128,7 @@ public class Calculator3OpFactory<TTarget: Equatable, TOperand0, TOperand1, TOpe
             let targetField = network.getField(id: targetId) as? Field<TTarget>
         else { return nil }
 
-        return Calculator3Op<TTarget, TOperand0, TOperand1, TOperand2>(network: network, target: targetField, operand0: operand0Field, operand1: operand1Field, operand2: operand2Field, calcFn: calcFn)
+        return Calculator3Op<TTarget, TOperand0, TOperand1, TOperand2>(network: network, target: targetField, operand0: operand0Field, operand1: operand1Field, operand2: operand2Field, calcFn: calcFn, readyFn: readyFn)
     }
 
 }
@@ -133,8 +142,10 @@ public class Calculator4OpFactory<TTarget: Equatable, TOperand0, TOperand1, TOpe
 
     public typealias CalcFn = Calculator4Op<TTarget, TOperand0, TOperand1, TOperand2, TOperand3>.CalcFn
     let calcFn: CalcFn
+    public typealias ReadyFn = Calculator4Op<TTarget, TOperand0, TOperand1, TOperand2, TOperand3>.ReadyFn
+    let readyFn: ReadyFn?
 
-    init(targetId: FieldID, operand0Id: FieldID, operand1Id: FieldID, operand2Id: FieldID, operand3Id: FieldID, calcFn: @escaping CalcFn) {
+    init(targetId: FieldID, operand0Id: FieldID, operand1Id: FieldID, operand2Id: FieldID, operand3Id: FieldID, calcFn: @escaping CalcFn, readyFn: ReadyFn? = nil) {
         self.targetId = targetId
         self.operand0Id = operand0Id
         self.operand1Id = operand1Id
@@ -142,11 +153,12 @@ public class Calculator4OpFactory<TTarget: Equatable, TOperand0, TOperand1, TOpe
         self.operand3Id = operand3Id
 
         self.calcFn = calcFn
+        self.readyFn = readyFn
         super.init()
     }
 
-    public static func registerFactory(target: Field<TTarget>, operand0: Field<TOperand0>, operand1: Field<TOperand1>, operand2: Field<TOperand2>, operand3: Field<TOperand3>, calcFn: @escaping CalcFn) {
-        _ = Calculator4OpFactory(targetId: target.id, operand0Id: operand0.id, operand1Id: operand1.id, operand2Id: operand2.id, operand3Id: operand3.id, calcFn: calcFn)
+    public static func registerFactory(target: Field<TTarget>, operand0: Field<TOperand0>, operand1: Field<TOperand1>, operand2: Field<TOperand2>, operand3: Field<TOperand3>, calcFn: @escaping CalcFn, readyFn: ReadyFn? = nil) {
+        _ = Calculator4OpFactory(targetId: target.id, operand0Id: operand0.id, operand1Id: operand1.id, operand2Id: operand2.id, operand3Id: operand3.id, calcFn: calcFn, readyFn: readyFn)
     }
 
     override func makeOrphanCalculator(network: BicycleNetwork) -> AnyCalculator? {
@@ -159,7 +171,7 @@ public class Calculator4OpFactory<TTarget: Equatable, TOperand0, TOperand1, TOpe
             let targetField = network.getField(id: targetId) as? Field<TTarget>
         else { return nil }
 
-        return Calculator4Op<TTarget, TOperand0, TOperand1, TOperand2, TOperand3>(network: network, target: targetField, operand0: operand0Field, operand1: operand1Field, operand2: operand2Field, operand3: operand3Field, calcFn: calcFn)
+        return Calculator4Op<TTarget, TOperand0, TOperand1, TOperand2, TOperand3>(network: network, target: targetField, operand0: operand0Field, operand1: operand1Field, operand2: operand2Field, operand3: operand3Field, calcFn: calcFn, readyFn: readyFn)
     }
 
 }
@@ -174,8 +186,10 @@ public class Calculator5OpFactory<TTarget: Equatable, TOperand0, TOperand1, TOpe
 
     public typealias CalcFn = Calculator5Op<TTarget, TOperand0, TOperand1, TOperand2, TOperand3, TOperand4>.CalcFn
     let calcFn: CalcFn
+    public typealias ReadyFn = Calculator5Op<TTarget, TOperand0, TOperand1, TOperand2, TOperand3, TOperand4>.ReadyFn
+    let readyFn: ReadyFn?
 
-    init(targetId: FieldID, operand0Id: FieldID, operand1Id: FieldID, operand2Id: FieldID, operand3Id: FieldID, operand4Id: FieldID, calcFn: @escaping CalcFn) {
+    init(targetId: FieldID, operand0Id: FieldID, operand1Id: FieldID, operand2Id: FieldID, operand3Id: FieldID, operand4Id: FieldID, calcFn: @escaping CalcFn, readyFn: ReadyFn? = nil) {
         self.targetId = targetId
         self.operand0Id = operand0Id
         self.operand1Id = operand1Id
@@ -184,11 +198,12 @@ public class Calculator5OpFactory<TTarget: Equatable, TOperand0, TOperand1, TOpe
         self.operand4Id = operand4Id
 
         self.calcFn = calcFn
+        self.readyFn = readyFn
         super.init()
     }
 
-    public static func registerFactory(target: Field<TTarget>, operand0: Field<TOperand0>, operand1: Field<TOperand1>, operand2: Field<TOperand2>, operand3: Field<TOperand3>, operand4: Field<TOperand4>, calcFn: @escaping CalcFn) {
-        _ = Calculator5OpFactory(targetId: target.id, operand0Id: operand0.id, operand1Id: operand1.id, operand2Id: operand2.id, operand3Id: operand3.id, operand4Id: operand4.id, calcFn: calcFn)
+    public static func registerFactory(target: Field<TTarget>, operand0: Field<TOperand0>, operand1: Field<TOperand1>, operand2: Field<TOperand2>, operand3: Field<TOperand3>, operand4: Field<TOperand4>, calcFn: @escaping CalcFn, readyFn: ReadyFn? = nil) {
+        _ = Calculator5OpFactory(targetId: target.id, operand0Id: operand0.id, operand1Id: operand1.id, operand2Id: operand2.id, operand3Id: operand3.id, operand4Id: operand4.id, calcFn: calcFn, readyFn: readyFn)
     }
 
     override func makeOrphanCalculator(network: BicycleNetwork) -> AnyCalculator? {
@@ -202,7 +217,7 @@ public class Calculator5OpFactory<TTarget: Equatable, TOperand0, TOperand1, TOpe
             let targetField = network.getField(id: targetId) as? Field<TTarget>
         else { return nil }
 
-        return Calculator5Op<TTarget, TOperand0, TOperand1, TOperand2, TOperand3, TOperand4>(network: network, target: targetField, operand0: operand0Field, operand1: operand1Field, operand2: operand2Field, operand3: operand3Field, operand4: operand4Field, calcFn: calcFn)
+        return Calculator5Op<TTarget, TOperand0, TOperand1, TOperand2, TOperand3, TOperand4>(network: network, target: targetField, operand0: operand0Field, operand1: operand1Field, operand2: operand2Field, operand3: operand3Field, operand4: operand4Field, calcFn: calcFn, readyFn: readyFn)
     }
 
 }
@@ -218,8 +233,10 @@ public class Calculator6OpFactory<TTarget: Equatable, TOperand0, TOperand1, TOpe
 
     public typealias CalcFn = Calculator6Op<TTarget, TOperand0, TOperand1, TOperand2, TOperand3, TOperand4, TOperand5>.CalcFn
     let calcFn: CalcFn
+    public typealias ReadyFn = Calculator6Op<TTarget, TOperand0, TOperand1, TOperand2, TOperand3, TOperand4, TOperand5>.ReadyFn
+    let readyFn: ReadyFn?
 
-    init(targetId: FieldID, operand0Id: FieldID, operand1Id: FieldID, operand2Id: FieldID, operand3Id: FieldID, operand4Id: FieldID, operand5Id: FieldID, calcFn: @escaping CalcFn) {
+    init(targetId: FieldID, operand0Id: FieldID, operand1Id: FieldID, operand2Id: FieldID, operand3Id: FieldID, operand4Id: FieldID, operand5Id: FieldID, calcFn: @escaping CalcFn, readyFn: ReadyFn? = nil) {
         self.targetId = targetId
         self.operand0Id = operand0Id
         self.operand1Id = operand1Id
@@ -229,11 +246,12 @@ public class Calculator6OpFactory<TTarget: Equatable, TOperand0, TOperand1, TOpe
         self.operand5Id = operand5Id
 
         self.calcFn = calcFn
+        self.readyFn = readyFn
         super.init()
     }
 
-    public static func registerFactory(target: Field<TTarget>, operand0: Field<TOperand0>, operand1: Field<TOperand1>, operand2: Field<TOperand2>, operand3: Field<TOperand3>, operand4: Field<TOperand4>, operand5: Field<TOperand5>, calcFn: @escaping CalcFn) {
-        _ = Calculator6OpFactory(targetId: target.id, operand0Id: operand0.id, operand1Id: operand1.id, operand2Id: operand2.id, operand3Id: operand3.id, operand4Id: operand4.id, operand5Id: operand5.id, calcFn: calcFn)
+    public static func registerFactory(target: Field<TTarget>, operand0: Field<TOperand0>, operand1: Field<TOperand1>, operand2: Field<TOperand2>, operand3: Field<TOperand3>, operand4: Field<TOperand4>, operand5: Field<TOperand5>, calcFn: @escaping CalcFn, readyFn: ReadyFn? = nil) {
+        _ = Calculator6OpFactory(targetId: target.id, operand0Id: operand0.id, operand1Id: operand1.id, operand2Id: operand2.id, operand3Id: operand3.id, operand4Id: operand4.id, operand5Id: operand5.id, calcFn: calcFn, readyFn: readyFn)
     }
 
     override func makeOrphanCalculator(network: BicycleNetwork) -> AnyCalculator? {
@@ -248,7 +266,7 @@ public class Calculator6OpFactory<TTarget: Equatable, TOperand0, TOperand1, TOpe
             let targetField = network.getField(id: targetId) as? Field<TTarget>
         else { return nil }
 
-        return Calculator6Op<TTarget, TOperand0, TOperand1, TOperand2, TOperand3, TOperand4, TOperand5>(network: network, target: targetField, operand0: operand0Field, operand1: operand1Field, operand2: operand2Field, operand3: operand3Field, operand4: operand4Field, operand5: operand5Field, calcFn: calcFn)
+        return Calculator6Op<TTarget, TOperand0, TOperand1, TOperand2, TOperand3, TOperand4, TOperand5>(network: network, target: targetField, operand0: operand0Field, operand1: operand1Field, operand2: operand2Field, operand3: operand3Field, operand4: operand4Field, operand5: operand5Field, calcFn: calcFn, readyFn: readyFn)
     }
 
 }

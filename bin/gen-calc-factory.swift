@@ -59,16 +59,19 @@ func calcFactory(numOperands: Int) -> String {
   \(properties(numOperands: numOperands))
       public typealias CalcFn = Calculator\(numOperands)Op<TTarget, \(typeList(numOperands: numOperands))>.CalcFn
       let calcFn: CalcFn
+      public typealias ReadyFn = Calculator\(numOperands)Op<TTarget, \(typeList(numOperands: numOperands))>.ReadyFn
+      let readyFn: ReadyFn?
 
-      init(targetId: FieldID, \(argIdList(numOperands: numOperands)), calcFn: @escaping CalcFn) {
+      init(targetId: FieldID, \(argIdList(numOperands: numOperands)), calcFn: @escaping CalcFn, readyFn: ReadyFn? = nil) {
           self.targetId = targetId
   \(initProperties(numOperands: numOperands))
           self.calcFn = calcFn
+          self.readyFn = readyFn
           super.init()
       }
 
-      public static func registerFactory(target: Field<TTarget>, \(argFieldList(numOperands: numOperands)), calcFn: @escaping CalcFn) {
-          _ = Calculator\(numOperands)OpFactory(targetId: target.id, \(argPassList(numOperands: numOperands)), calcFn: calcFn)
+      public static func registerFactory(target: Field<TTarget>, \(argFieldList(numOperands: numOperands)), calcFn: @escaping CalcFn, readyFn: ReadyFn? = nil) {
+          _ = Calculator\(numOperands)OpFactory(targetId: target.id, \(argPassList(numOperands: numOperands)), calcFn: calcFn, readyFn: readyFn)
       }
 
       override func makeOrphanCalculator(network: BicycleNetwork) -> AnyCalculator? {
@@ -77,7 +80,7 @@ func calcFactory(numOperands: Int) -> String {
               let targetField = network.getField(id: targetId) as? Field<TTarget>
           else { return nil }
 
-          return Calculator\(numOperands)Op<TTarget, \(typeList(numOperands: numOperands))>(network: network, target: targetField, \(argPassFieldList(numOperands: numOperands)), calcFn: calcFn)
+          return Calculator\(numOperands)Op<TTarget, \(typeList(numOperands: numOperands))>(network: network, target: targetField, \(argPassFieldList(numOperands: numOperands)), calcFn: calcFn, readyFn: readyFn)
       }
 
   }
