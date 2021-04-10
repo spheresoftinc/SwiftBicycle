@@ -49,6 +49,52 @@ class FieldTests: XCTestCase {
         XCTAssertEqual(inches.value(), 12.0)
     }
 
+    func testFieldCalculatorDefaults() {
+        let network = BicycleNetwork()
+
+        let feet = Field<Double>(name: "feet")
+        network.adoptField(field: feet)
+        feet.setDefault(value: 1)
+
+        let inches = Field<Double>(name: "inches")
+        network.adoptField(field: inches)
+
+        Calculator1OpFactory.registerFactory(target: inches, operand0: feet) { $0 * 12.0 }
+        Calculator1OpFactory.registerFactory(target: feet, operand0: inches) { $0 / 12.0 }
+
+        network.connectCalculators()
+
+        XCTAssertEqual(feet.code, .defaultValue)
+        XCTAssertEqual(feet.value(), 1.0)
+        XCTAssertEqual(inches.code, .calced)
+        XCTAssertEqual(inches.value(), 12.0)
+
+        let setter = SetterConstant(target: feet, value: 3.0)
+        network.adoptSetter(setter: setter)
+
+        XCTAssertEqual(feet.code, .set)
+        XCTAssertEqual(feet.value(), 3.0)
+
+        XCTAssertEqual(inches.code, .calced)
+        XCTAssertEqual(inches.value(), 36.0)
+
+        let setter2 = SetterConstant(target: inches, value: 12.0)
+        network.adoptSetter(setter: setter2)
+        XCTAssertEqual(feet.code, .calced)
+        XCTAssertEqual(feet.value(), 1.0)
+        XCTAssertEqual(inches.code, .set)
+        XCTAssertEqual(inches.value(), 12.0)
+
+        network.dropUserProvidedSetters(field: feet)
+        network.dropUserProvidedSetters(field: inches)
+
+        XCTAssertEqual(feet.code, .defaultValue)
+        XCTAssertEqual(feet.value(), 1.0)
+        XCTAssertEqual(inches.code, .calced)
+        XCTAssertEqual(inches.value(), 12.0)
+    }
+
+
     func test2Op() {
         let network = BicycleNetwork()
 

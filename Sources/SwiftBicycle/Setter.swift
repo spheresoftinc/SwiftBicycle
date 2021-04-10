@@ -161,7 +161,43 @@ public class SetterError<T>: AnySetter {
 
 }
 
-// Convenience function for using constant setters
+public class SetterDefault<T>: AnySetter {
+
+    public typealias ValueType = T
+    let target: Field<T>
+    let value: T
+
+    public init(priorityLevel: PriorityLevel = .normal, target: Field<T>, value: T) {
+        self.target = target
+        self.value = value
+        super.init(priorityLevel: priorityLevel)
+    }
+
+    override func anyTarget() -> AnyField {
+        return target
+    }
+
+    override func setField() -> Bool {
+        if target.code.isEmpty() {
+            BicycleLog("Trying to set default \(target.name)")
+            if target.setValue(value: self.value, code: .defaultValue) {
+                BicycleLog("Set \(target.name) to default \(self.value)")
+                return true
+            } else {
+                // don't use resetfield, because in this case,
+                // the code is set, not calced, and
+                // the assert will fail.
+                target.code = .clear
+                BicycleLog("Failed to set default \(target.name)")
+                return false
+            }
+        }
+        return false
+    }
+}
+
+
+// Convenience functions for using setters
 public extension Field where Field.ValueType: Equatable {
     func set(value: T) {
         guard
@@ -171,14 +207,20 @@ public extension Field where Field.ValueType: Equatable {
 
         network.adoptSetter(setter: SetterConstant(target: self, value: value))
     }
-}
 
-public extension Field where Field.ValueType: Equatable {
     func setError(text: String) {
         guard
             let network = self.network
         else { return }
 
         network.adoptSetter(setter: SetterError(target: self, text: text))
+    }
+
+    func setDefault(value: T) {
+        guard
+            let network = self.network
+        else { return }
+
+        network.adoptSetter(setter: SetterDefault(target: self, value: value))
     }
 }
