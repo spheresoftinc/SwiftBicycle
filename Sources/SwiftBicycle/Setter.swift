@@ -196,6 +196,42 @@ public class SetterDefault<T>: AnySetter {
     }
 }
 
+public class SetterDefaultFn<T>: AnySetter {
+
+    public typealias ValueType = T
+    let target: Field<T>
+    let valueFn: () -> T
+
+    public init(priorityLevel: PriorityLevel = .normal, target: Field<T>, valueFn: @escaping () -> T) {
+        self.target = target
+        self.valueFn = valueFn
+        super.init(priorityLevel: priorityLevel)
+    }
+
+    override func anyTarget() -> AnyField {
+        return target
+    }
+
+    override func setField() -> Bool {
+        if target.code.isEmpty() {
+            BicycleLog("Trying to set via default function \(target.name)")
+            let value = self.valueFn()
+            if target.setValue(value: value, code: .defaultValue) {
+                BicycleLog("Set \(target.name) to function result \(value)")
+                return true
+            } else {
+                // don't use resetfield, because in this case,
+                // the code is set, not calced, and
+                // the assert will fail.
+                target.code = .clear
+                BicycleLog("Failed to set via default function \(target.name)")
+                return false
+            }
+        }
+        return false
+    }
+}
+
 
 // Convenience functions for using setters
 public extension Field where Field.ValueType: Equatable {
@@ -222,5 +258,13 @@ public extension Field where Field.ValueType: Equatable {
         else { return }
 
         network.adoptSetter(setter: SetterDefault(target: self, value: value))
+    }
+
+    func setDefault(valueFn: @escaping () -> T) {
+        guard
+            let network = self.network
+        else { return }
+
+        network.adoptSetter(setter: SetterDefaultFn(target: self, valueFn: valueFn))
     }
 }
