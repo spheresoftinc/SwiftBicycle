@@ -112,7 +112,7 @@ public class SetterConstant<T>: AnySetter {
 
     override func setField() -> Bool {
         if target.code.isEmpty() {
-            BicycleLog("Trying to setting \(target.name)")
+            BicycleLog("Trying to set \(target.name)")
             if target.setValue(value: self.value, code: .set) {
                 BicycleLog("Set \(target.name) to \(self.value)")
                 return true
