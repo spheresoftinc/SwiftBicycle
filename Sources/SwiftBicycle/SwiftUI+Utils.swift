@@ -11,6 +11,11 @@ import SwiftUI
 @available(macOS 10.15, iOS 13, watchOS 6, tvOS 13, *)
 public extension TextField where Label == Text {
     init<S, T>(_ title: S, field: Binding<Field<T>>) where S : StringProtocol, T: Equatable & LosslessStringConvertible  {
-        self.init(title, value: field.bind, formatter: FieldFormatter<T>(formatter: field.formatter.wrappedValue))
+        self.init(title, value: field.bind, formatter: FieldFormatter<T>(formatter: field.formatter.wrappedValue), onEditingChanged: { isEditing in
+                if !isEditing {
+                    BicycleLog("Stopped editing a field: \(field.wrappedValue.name)")
+                }
+            }
+        )
     }
 }
