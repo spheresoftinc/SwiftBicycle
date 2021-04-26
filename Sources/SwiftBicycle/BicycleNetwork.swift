@@ -220,11 +220,17 @@ public class BicycleNetwork {
         }
     }
 
-    func dropUserProvidedSetters(field: AnyField) {
+    public func dropUserProvidedSetters(field: AnyField) {
         setters.removeAll { setter in
             return setter.isUserProvided() && setter.isMatch(field: field)
         }
         doAutoCalc()
     }
 
+    public func dropUserProvidedSetters() {
+        setters.removeAll { setter in
+            return setter.isUserProvided()
+        }
+        doAutoCalc()
+    }
 }
