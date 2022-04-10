@@ -35,10 +35,8 @@ class FieldFormatter<T> : Formatter where T: LosslessStringConvertible {
             obj?.pointee = FieldValue<T>(value: nil, text: nil)
             return true
         }
-        guard let value = T(string) else {
-            obj?.pointee = FieldValue<T>(value: nil, text: string)
-            return true
-        }
+
+        // If we have a formatter, use it
         if let formatter = self.formatter {
             if formatter.getObjectValue(obj, for: string, errorDescription: error) {
                 if let value = obj?.pointee as? T {
@@ -47,6 +45,13 @@ class FieldFormatter<T> : Formatter where T: LosslessStringConvertible {
                 }
             }
             return false
+        }
+
+        // Otherwise, we try the LosslessStringConvertible init
+        guard let value = T(string) else {
+            // This will make the FieldValue binder (below) 
+            obj?.pointee = FieldValue<T>(value: nil, text: string)
+            return true
         }
         obj?.pointee = FieldValue<T>(value: value, text: string)
         return true

@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol BicycleNetworkDelegate: class {
+public protocol BicycleNetworkDelegate: AnyObject {
     func networkWillCalculate(_ network: BicycleNetwork)
     func networkDidCalculate(_ network: BicycleNetwork)
 }

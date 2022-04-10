@@ -15,7 +15,7 @@ class FieldTests: XCTestCase {
         let network = BicycleNetwork()
         let f = Field<Int>()
         network.adoptField(field: f)
-        XCTAssertEqual(f.code, Field.Code.clear)
+        XCTAssertEqual(f.code, Field<Int>.Code.clear)
     }
 
     func testFieldCalculator() {
