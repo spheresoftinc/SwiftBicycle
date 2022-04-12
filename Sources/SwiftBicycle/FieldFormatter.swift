@@ -75,7 +75,7 @@ extension Field where Field.ValueType: Equatable & LosslessStringConvertible {
             } else if case let .error(text) = self.code {
                 return FieldValue(value: nil, text: text)
             }
-            return FieldValue(value: self.value())
+            return FieldValue(value: self.value(), text: self.text)
         }
         set {
             guard let v = newValue.value else {
