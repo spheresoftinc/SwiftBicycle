@@ -78,11 +78,11 @@ extension Field where Field.ValueType: Equatable & LosslessStringConvertible {
             return FieldValue(value: self.value(), text: self.text)
         }
         set {
+            guard let text = newValue.text else {
+                self.network?.dropUserProvidedSetters(field: self)
+                return
+            }
             guard let v = newValue.value else {
-                guard let text = newValue.text else {
-                    self.network?.dropUserProvidedSetters(field: self)
-                    return
-                }
                 self.setError(text: text)
                 return
             }
