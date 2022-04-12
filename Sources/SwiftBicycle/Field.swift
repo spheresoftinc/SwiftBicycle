@@ -162,7 +162,7 @@ public extension Field where Field.ValueType: Equatable & LosslessStringConverti
         }
         if !self.code.isEmpty() {
             if let formatter = self.formatter {
-                return formatter.string(for: self.value) ?? ""
+                return formatter.string(for: self.value()) ?? ""
             }
             return String(self.value())
         } else {
