@@ -49,7 +49,7 @@ class FieldFormatter<T> : Formatter where T: LosslessStringConvertible {
 
         // Otherwise, we try the LosslessStringConvertible init
         guard let value = T(string) else {
-            // This will make the FieldValue binder (below) 
+            // This will make the FieldValue binder (below) use an error setter
             obj?.pointee = FieldValue<T>(value: nil, text: string)
             return true
         }
