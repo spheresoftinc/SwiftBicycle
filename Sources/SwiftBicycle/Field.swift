@@ -151,6 +151,9 @@ public extension Field where Field.ValueType: Equatable {
 
 public extension Field where Field.ValueType: Equatable & LosslessStringConvertible {
     internal func set(text: String) {
+        guard text != self.text else {
+            return
+        }
         if let formatter = self.formatter {
             var obj: AnyObject?
             var error: NSString?
